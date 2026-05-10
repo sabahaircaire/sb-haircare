@@ -1,6 +1,8 @@
 import { Redirect } from "expo-router";
+import { useAuth } from "@/store/auth";
 
 export default function Index() {
-  // V1: redirect to onboarding. Once auth/profile state is in store, branch here.
+  const session = useAuth((s) => s.session);
+  if (session) return <Redirect href="/(tabs)" />;
   return <Redirect href="/(onboarding)/welcome" />;
 }

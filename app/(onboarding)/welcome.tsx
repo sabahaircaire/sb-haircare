@@ -23,8 +23,14 @@ export default function WelcomeScreen() {
         </Text>
         <Button
           label="Commencer le diagnostic"
+          className="w-full max-w-[320px] mb-3"
+          onPress={() => router.push("/(onboarding)/name")}
+        />
+        <Button
+          label="J'ai déjà un compte"
+          variant="ghost"
           className="w-full max-w-[320px]"
-          onPress={() => router.replace("/(tabs)")}
+          onPress={() => router.push("/(onboarding)/signin")}
         />
       </View>
     </ScreenContainer>
