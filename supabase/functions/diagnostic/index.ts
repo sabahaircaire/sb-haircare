@@ -79,7 +79,7 @@ Deno.serve(async (req) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "authorization, content-type",
+        "Access-Control-Allow-Headers": "authorization, content-type, apikey, x-client-info",
       },
     });
   }
@@ -87,11 +87,16 @@ Deno.serve(async (req) => {
     return new Response("Method not allowed", { status: 405 });
   }
 
+  const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "content-type": "application/json",
+  };
+
   const apiKey = Deno.env.get("ANTHROPIC_API_KEY");
   if (!apiKey) {
     return new Response(
       JSON.stringify({ error: "Missing ANTHROPIC_API_KEY secret" }),
-      { status: 500, headers: { "content-type": "application/json" } },
+      { status: 500, headers: corsHeaders },
     );
   }
 
@@ -101,7 +106,7 @@ Deno.serve(async (req) => {
   } catch {
     return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
       status: 400,
-      headers: { "content-type": "application/json" },
+      headers: corsHeaders,
     });
   }
 
@@ -139,7 +144,7 @@ Deno.serve(async (req) => {
     const text = await apiResp.text();
     return new Response(
       JSON.stringify({ error: "Anthropic API error", detail: text }),
-      { status: 502, headers: { "content-type": "application/json" } },
+      { status: 502, headers: corsHeaders },
     );
   }
 
@@ -158,14 +163,9 @@ Deno.serve(async (req) => {
         error: "Failed to parse Claude JSON response",
         raw,
       }),
-      { status: 502, headers: { "content-type": "application/json" } },
+      { status: 502, headers: corsHeaders },
     );
   }
 
-  return new Response(JSON.stringify({ diagnostic }), {
-    headers: {
-      "content-type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+  return new Response(JSON.stringify({ diagnostic }), { headers: corsHeaders });
 });
