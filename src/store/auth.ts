@@ -6,7 +6,10 @@ type AuthState = {
   session: Session | null;
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (
+    email: string,
+    password: string,
+  ) => Promise<{ error: Error | null; session: Session | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   bootstrap: () => Promise<void>;
@@ -34,8 +37,8 @@ export const useAuth = create<AuthState>((set) => ({
   },
 
   signUp: async (email, password) => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    return { error };
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    return { error, session: data?.session ?? null };
   },
 
   signIn: async (email, password) => {

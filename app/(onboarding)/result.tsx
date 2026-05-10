@@ -22,37 +22,43 @@ export default function ResultScreen() {
     if (!email || password.length < 6) return;
     setLoading(true);
 
-    const { error: signUpError } = await signUp(email.trim(), password);
+    const { error: signUpError, session } = await signUp(email.trim(), password);
     if (signUpError) {
       setLoading(false);
       Alert.alert("Inscription impossible", signUpError.message);
       return;
     }
 
-    // Wait for session to be set, then save profile
-    const { data: sessionData } = await supabase.auth.getSession();
-    const userId = sessionData.session?.user.id;
+    // With email autoconfirm ON, signUp returns a session immediately.
+    // Otherwise (rare path), wait briefly for AsyncStorage to flush, then re-fetch.
+    let userId = session?.user?.id;
+    if (!userId) {
+      await new Promise((r) => setTimeout(r, 400));
+      const { data } = await supabase.auth.getSession();
+      userId = data.session?.user?.id;
+    }
     if (!userId) {
       setLoading(false);
       Alert.alert(
-        "Email à confirmer",
-        "Vérifie ta boîte mail pour confirmer ton compte. Ton profil sera enregistré après confirmation.",
+        "Compte créé",
+        "Ton compte est créé mais on n'a pas pu te connecter automatiquement. Re-connecte-toi pour finaliser ton profil.",
       );
+      router.replace("/(onboarding)/signin");
       return;
     }
 
-    const { error: profileError } = await supabase
-      .from("profiles")
-      .update({
-        display_name: answers.display_name ?? null,
-        hair_type: diagnostic?.hair_type ?? answers.hair_type ?? null,
-        porosity: diagnostic?.porosity ?? answers.porosity ?? null,
-        current_length: answers.current_length ?? null,
-        goal_length: answers.goal_length ?? null,
-        diagnostic_summary: diagnostic ?? null,
-        diagnostic_completed_at: diagnostic ? new Date().toISOString() : null,
-      })
-      .eq("id", userId);
+    // Upsert (vs update) so we don't depend on the auth.users trigger having
+    // already inserted the profile row — race-condition safe.
+    const { error: profileError } = await supabase.from("profiles").upsert({
+      id: userId,
+      display_name: answers.display_name ?? null,
+      hair_type: diagnostic?.hair_type ?? answers.hair_type ?? null,
+      porosity: diagnostic?.porosity ?? answers.porosity ?? null,
+      current_length: answers.current_length ?? null,
+      goal_length: answers.goal_length ?? null,
+      diagnostic_summary: diagnostic ?? null,
+      diagnostic_completed_at: diagnostic ? new Date().toISOString() : null,
+    });
 
     setLoading(false);
 
