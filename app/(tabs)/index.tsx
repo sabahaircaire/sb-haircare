@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, Image, Linking } from "react-native";
 import { useRouter } from "expo-router";
+import { productsForPorosity } from "@/lib/products";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
@@ -416,76 +417,59 @@ function levelLabel(code: string): string {
 // PRODUITS
 // -----------------------------------------------------------------------------
 
-const PRODUCTS_BY_POROSITY: Record<
-  "low" | "medium" | "high",
-  { title: string; subtitle: string; tag: string; href?: string }[]
-> = {
-  low: [
-    {
-      title: "Rituel pousse",
-      subtitle: "Masque ayurvédique en poudre — Bringaraj, Brahmi, Hibiscus",
-      tag: "Bestseller",
-    },
-    {
-      title: "Bain d'huile léger",
-      subtitle: "Pénètre les fibres compactes sans alourdir",
-      tag: "Faible porosité",
-    },
-  ],
-  medium: [
-    {
-      title: "Rituel pousse",
-      subtitle: "Masque ayurvédique en poudre — Bringaraj, Brahmi, Hibiscus",
-      tag: "Bestseller",
-    },
-    {
-      title: "Bain d'huile équilibré",
-      subtitle: "Coco · Ricin · Amande douce",
-      tag: "Polyvalent",
-    },
-  ],
-  high: [
-    {
-      title: "Rituel pousse",
-      subtitle: "Masque ayurvédique en poudre — Bringaraj, Brahmi, Hibiscus",
-      tag: "Bestseller",
-    },
-    {
-      title: "Bain d'huile riche",
-      subtitle: "Scelle l'hydratation, évite les frisottis",
-      tag: "Porosité élevée",
-    },
-  ],
-};
-
 function ProduitsSection({
   porosity,
 }: {
   porosity: "low" | "medium" | "high";
 }) {
-  const products = PRODUCTS_BY_POROSITY[porosity];
+  const products = productsForPorosity(porosity);
   return (
     <View>
       <Text variant="label" className="mb-3">
-        Produits recommandés pour ta {porosityLabel(porosity).toLowerCase()}
+        Produits SB Haircare pour ta {porosityLabel(porosity).toLowerCase()}
       </Text>
-      {products.map((p, i) => (
-        <Card key={i} variant="outline" className="mb-3">
-          <View className="flex-row items-start justify-between mb-2">
-            <Text variant="h3" className="flex-1">
-              {p.title}
-            </Text>
-            <Pill variant="ocre">
-              <Text variant="caption" className="text-ocre-deep">
-                {p.tag}
-              </Text>
-            </Pill>
+      {products.map((p) => (
+        <View
+          key={p.slug}
+          className="bg-cream-light rounded-2xl mb-4 overflow-hidden border border-cream-warm"
+        >
+          <View className="h-48 bg-cream-warm">
+            <Image
+              source={{ uri: p.image }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
           </View>
-          <Text variant="body" className="mb-3">
-            {p.subtitle}
-          </Text>
-          <Button label="Découvrir" />
-        </Card>
+          <View className="p-4">
+            <View className="flex-row items-start justify-between mb-1">
+              <Text variant="h3" className="flex-1 pr-2">
+                {p.name}
+              </Text>
+              {p.tag ? (
+                <Pill variant="ocre">
+                  <Text variant="caption" className="text-ocre-deep">
+                    {p.tag}
+                  </Text>
+                </Pill>
+              ) : null}
+            </View>
+            <Text variant="body" className="mb-2">
+              {p.short}
+            </Text>
+            <Text variant="caption" className="mb-3">
+              {p.ingredients.slice(0, 4).join(" · ")}
+            </Text>
+            <View className="flex-row items-center justify-between">
+              <Text variant="h3" className="text-bordeaux">
+                {p.price_eur.toFixed(2)} €
+              </Text>
+              <Button
+                label="Acheter →"
+                onPress={() => Linking.openURL(p.url)}
+              />
+            </View>
+          </View>
+        </View>
       ))}
     </View>
   );

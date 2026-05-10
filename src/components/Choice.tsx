@@ -29,7 +29,7 @@ export function Choice({ label, description, selected, onPress }: Props) {
           <Text
             variant="caption"
             className="mt-1"
-            style={{ color: selected ? "#F5EDE0" : "#8A7378" }}
+            style={{ color: selected ? "#FBF7ED" : "#8A7378" }}
           >
             {description}
           </Text>

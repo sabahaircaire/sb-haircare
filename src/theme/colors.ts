@@ -6,9 +6,9 @@ export const colors = {
     light: "#8C3A42",
   },
   cream: {
-    DEFAULT: "#F5EDE0",
-    light: "#FBF6EC",
-    warm: "#EFE3CF",
+    DEFAULT: "#FBF7ED", // body background — lighter than v1 (#F5EDE0)
+    light: "#FFFFFF", // surface / cards
+    warm: "#EFE3CF", // borders, accents
   },
   ocre: {
     DEFAULT: "#D4A24C",

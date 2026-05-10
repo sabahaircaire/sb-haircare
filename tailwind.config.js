@@ -13,8 +13,8 @@ module.exports = {
           light: "#8C3A42",
         },
         cream: {
-          DEFAULT: "#F5EDE0",
-          light: "#FBF6EC",
+          DEFAULT: "#FBF7ED",
+          light: "#FFFFFF",
           warm: "#EFE3CF",
         },
         ocre: {
