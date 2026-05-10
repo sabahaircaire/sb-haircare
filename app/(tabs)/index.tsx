@@ -429,47 +429,48 @@ function ProduitsSection({
         Produits SB Haircare pour ta {porosityLabel(porosity).toLowerCase()}
       </Text>
       {products.map((p) => (
-        <View
+        <Pressable
           key={p.slug}
-          className="bg-cream-light rounded-2xl mb-4 overflow-hidden border border-cream-warm"
+          onPress={() => Linking.openURL(p.url)}
+          className="bg-cream-light rounded-2xl mb-3 overflow-hidden border border-cream-warm flex-row"
         >
-          <View className="h-48 bg-cream-warm">
+          <View className="w-24 h-24 bg-cream-warm">
             <Image
               source={{ uri: p.image }}
               style={{ width: "100%", height: "100%" }}
               resizeMode="cover"
             />
           </View>
-          <View className="p-4">
-            <View className="flex-row items-start justify-between mb-1">
-              <Text variant="h3" className="flex-1 pr-2">
-                {p.name}
-              </Text>
-              {p.tag ? (
-                <Pill variant="ocre">
+          <View className="flex-1 p-3 justify-between">
+            <View>
+              <View className="flex-row items-start justify-between mb-0.5">
+                <Text variant="body-medium" className="flex-1 pr-2 text-ink">
+                  {p.name}
+                </Text>
+                {p.tag ? (
                   <Text variant="caption" className="text-ocre-deep">
                     {p.tag}
                   </Text>
-                </Pill>
-              ) : null}
+                ) : null}
+              </View>
+              <Text
+                variant="caption"
+                numberOfLines={2}
+                className="mb-1"
+              >
+                {p.short}
+              </Text>
             </View>
-            <Text variant="body" className="mb-2">
-              {p.short}
-            </Text>
-            <Text variant="caption" className="mb-3">
-              {p.ingredients.slice(0, 4).join(" · ")}
-            </Text>
             <View className="flex-row items-center justify-between">
-              <Text variant="h3" className="text-bordeaux">
+              <Text variant="body-medium" className="text-bordeaux">
                 {p.price_eur.toFixed(2)} €
               </Text>
-              <Button
-                label="Acheter →"
-                onPress={() => Linking.openURL(p.url)}
-              />
+              <Text variant="caption" className="text-bordeaux">
+                Acheter →
+              </Text>
             </View>
           </View>
-        </View>
+        </Pressable>
       ))}
     </View>
   );
