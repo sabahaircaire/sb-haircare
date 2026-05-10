@@ -1,7 +1,6 @@
 [build]
-  base = "sb-haircare"
   command = "npm run build:web"
-  publish = "sb-haircare/dist"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "20"
