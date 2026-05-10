@@ -24,6 +24,7 @@ const FILTERS: { value: HairstyleCategory | "all"; label: string }[] = [
   { value: "twists", label: "Twists" },
   { value: "cornrows", label: "Cornrows" },
   { value: "wig", label: "Tissages" },
+  { value: "locs", label: "Locs" },
   { value: "natural", label: "Naturel" },
 ];
 

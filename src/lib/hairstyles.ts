@@ -35,6 +35,7 @@ export const HAIRSTYLE_PHOTOS: Record<string, number | undefined> = {
   // cornrows:        require("../../assets/hairstyles/cornrows.jpg"),
   // stitch_braids:   require("../../assets/hairstyles/stitch_braids.jpg"),
   // tissage:         require("../../assets/hairstyles/tissage.jpg"),
+  // locs_retwist:    require("../../assets/hairstyles/locs_retwist.jpg"),
 };
 
 export const HAIRSTYLES: Hairstyle[] = [
@@ -109,6 +110,15 @@ export const HAIRSTYLES: Hairstyle[] = [
     duration_weeks_max: 8,
     description:
       "Maximum de flexibilité. Dort en bonnet satin, retire-la régulièrement pour aérer.",
+  },
+  {
+    code: "locs_retwist",
+    name: "Locs Retwist",
+    category: "locs",
+    duration_weeks_min: 6,
+    duration_weeks_max: 9,
+    description:
+      "Retwist des racines pour des locs nettes et ordonnées. Bain d'huile entre deux pour la souplesse.",
   },
   {
     code: "afro_libre",
