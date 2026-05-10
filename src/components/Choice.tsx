@@ -30,6 +30,7 @@ export function Choice({ label, description, selected, onPress }: Props) {
             variant="caption"
             className="mt-1"
             style={{ color: selected ? "#FBF7ED" : "#8A7378" }}
+          // ^ keep cream caption color when selected, it's on bordeaux bg
           >
             {description}
           </Text>

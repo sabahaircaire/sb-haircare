@@ -6,8 +6,8 @@ export const colors = {
     light: "#8C3A42",
   },
   cream: {
-    DEFAULT: "#FBF7ED", // body background — lighter than v1 (#F5EDE0)
-    light: "#FFFFFF", // surface / cards
+    DEFAULT: "#FFFFFF", // body bg — pure white
+    light: "#FBF7ED", // surface / cards — warm tint for brand feel
     warm: "#EFE3CF", // borders, accents
   },
   ocre: {

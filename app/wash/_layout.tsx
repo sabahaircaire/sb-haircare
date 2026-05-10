@@ -5,7 +5,7 @@ export default function WashLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: "#FBF7ED" },
+        contentStyle: { backgroundColor: "#FFFFFF" },
       }}
     />
   );

@@ -27,6 +27,6 @@ export default function Root({ children }: PropsWithChildren) {
 
 const bodyStyle = `
 body {
-  background-color: #FBF7ED;
+  background-color: #FFFFFF;
 }
 `;

@@ -39,7 +39,7 @@ export default function RootLayout() {
           <Stack
             screenOptions={{
               headerShown: false,
-              contentStyle: { backgroundColor: "#FBF7ED" },
+              contentStyle: { backgroundColor: "#FFFFFF" },
             }}
           >
             <Stack.Screen name="(onboarding)" />
