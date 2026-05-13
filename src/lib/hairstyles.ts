@@ -29,15 +29,15 @@ export type Hairstyle = {
 // Then uncomment the require() lines.
 export const HAIRSTYLE_PHOTOS: Record<string, number | undefined> = {
   knotless_braids: require("../../assets/hairstyles/knotless_braids.jpg"),
+  box_braids: require("../../assets/hairstyles/box_braids.jpg"),
   mini_braids: require("../../assets/hairstyles/mini_braids.jpg"),
   mini_twists: require("../../assets/hairstyles/mini_twists.jpg"),
   cornrows: require("../../assets/hairstyles/cornrows.jpg"),
-  stitch_braids: require("../../assets/hairstyles/cornrows.jpg"), // reuse cornrows photo
+  stitch_braids: require("../../assets/hairstyles/stitch_braids.jpg"),
   tissage: require("../../assets/hairstyles/tissage.jpg"),
   locs_retwist: require("../../assets/hairstyles/locs_retwist.jpg"),
-  // box_braids — pas de photo encore, fallback bordeaux
-  // perruque — pas de photo encore
-  // afro_libre — pas de photo encore
+  afro_libre: require("../../assets/hairstyles/afro_libre.jpg"),
+  // perruque — pas de photo encore, fallback bordeaux
 };
 
 export const HAIRSTYLES: Hairstyle[] = [
