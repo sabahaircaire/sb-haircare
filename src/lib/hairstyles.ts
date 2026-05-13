@@ -37,7 +37,7 @@ export const HAIRSTYLE_PHOTOS: Record<string, number | undefined> = {
   tissage: require("../../assets/hairstyles/tissage.jpg"),
   locs_retwist: require("../../assets/hairstyles/locs_retwist.jpg"),
   afro_libre: require("../../assets/hairstyles/afro_libre.jpg"),
-  // perruque — pas de photo encore, fallback bordeaux
+  wig: require("../../assets/hairstyles/perruque.jpg"),
 };
 
 export const HAIRSTYLES: Hairstyle[] = [
