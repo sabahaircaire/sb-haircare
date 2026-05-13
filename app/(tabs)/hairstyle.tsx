@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { View, Pressable, Image, ScrollView } from "react-native";
+import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
@@ -8,12 +9,10 @@ import {
   HAIRSTYLES,
   HAIRSTYLE_PHOTOS,
   durationLabel,
-  type Hairstyle,
   type HairstyleCategory,
 } from "@/lib/hairstyles";
 import {
   useCurrentProtectiveStyle,
-  useStartProtectiveStyle,
   useEndProtectiveStyle,
   daysRemaining,
 } from "@/lib/hooks/useProtectiveStyle";
@@ -29,23 +28,15 @@ const FILTERS: { value: HairstyleCategory | "all"; label: string }[] = [
 ];
 
 export default function HairstyleScreen() {
+  const router = useRouter();
   const [filter, setFilter] = useState<HairstyleCategory | "all">("all");
   const { data: current } = useCurrentProtectiveStyle();
-  const startMut = useStartProtectiveStyle();
   const endMut = useEndProtectiveStyle();
 
   const filtered = useMemo(() => {
     if (filter === "all") return HAIRSTYLES;
     return HAIRSTYLES.filter((s) => s.category === filter);
   }, [filter]);
-
-  const onStartStyle = (s: Hairstyle) => {
-    startMut.mutate({
-      style_code: s.code,
-      style_name: s.name,
-      duration_weeks_max: s.duration_weeks_max,
-    });
-  };
 
   return (
     <ScreenContainer>
@@ -56,7 +47,7 @@ export default function HairstyleScreen() {
         Mon planner cheveux
       </Text>
 
-      {/* Compteur de style protecteur */}
+      {/* Compteur */}
       {current ? (
         <CurrentStyleCard
           log={current}
@@ -67,14 +58,16 @@ export default function HairstyleScreen() {
           <Text variant="label" className="mb-2">
             🎀 Compteur de style
           </Text>
-          <Text variant="body" className="mb-3">
-            Aucun style protecteur en cours. Choisis-en un dans la galerie pour
-            lancer le compteur.
+          <Text variant="body" className="mb-1">
+            Aucun style protecteur en cours.
+          </Text>
+          <Text variant="caption">
+            Choisis-en un dans la galerie pour voir tous les détails et lancer le compteur.
           </Text>
         </Card>
       )}
 
-      {/* Catégories filter */}
+      {/* Filters */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -111,33 +104,70 @@ export default function HairstyleScreen() {
         </View>
       </ScrollView>
 
-      {/* Inspiration grid (2 columns) */}
+      {/* Inspiration grid 2 columns */}
       <Text variant="label" className="mb-3">
         ✨ Inspiration
       </Text>
       <View className="flex-row flex-wrap gap-3">
         {filtered.map((s) => (
-          <StyleCard
+          <Pressable
             key={s.code}
-            style={s}
-            isCurrent={current?.style_code === s.code}
-            onStart={() => onStartStyle(s)}
-          />
+            onPress={() => router.push(`/hairstyle/${s.code}`)}
+            className="bg-cream-light rounded-2xl overflow-hidden border border-cream-warm"
+            style={{ width: "48%" }}
+          >
+            <View className="h-36 bg-bordeaux items-center justify-center relative">
+              {HAIRSTYLE_PHOTOS[s.code] ? (
+                <Image
+                  source={HAIRSTYLE_PHOTOS[s.code] as number}
+                  style={{ width: "100%", height: "100%" }}
+                  resizeMode="cover"
+                />
+              ) : (
+                <Text
+                  variant="h3"
+                  style={{
+                    color: colors.cream.light,
+                    textAlign: "center",
+                    paddingHorizontal: 8,
+                    fontSize: 14,
+                    lineHeight: 18,
+                  }}
+                >
+                  {s.name}
+                </Text>
+              )}
+              {current?.style_code === s.code ? (
+                <View className="absolute top-2 left-2 bg-cream-light rounded-full px-2 py-0.5">
+                  <Text variant="caption" className="text-bordeaux">
+                    ● En cours
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+            <View className="p-3">
+              <Text variant="body-medium" className="mb-0.5">
+                {s.name}
+              </Text>
+              <Text variant="caption">{durationLabel(s)}</Text>
+            </View>
+          </Pressable>
         ))}
       </View>
     </ScreenContainer>
   );
 }
 
-// -----------------------------------------------------------------------------
-// Current style card with countdown
-// -----------------------------------------------------------------------------
-
 function CurrentStyleCard({
   log,
   onEnd,
 }: {
-  log: { id: string; style_name: string; recommended_remove_on: string; installed_on: string };
+  log: {
+    id: string;
+    style_name: string;
+    recommended_remove_on: string;
+    installed_on: string;
+  };
   onEnd: () => void;
 }) {
   const remaining = daysRemaining(log as any);
@@ -155,14 +185,21 @@ function CurrentStyleCard({
       <Text variant="h2" className="mb-1" style={{ color: colors.white }}>
         {log.style_name}
       </Text>
-      <Text variant="body" className="mb-1" style={{ color: colors.cream.light }}>
+      <Text
+        variant="body"
+        className="mb-1"
+        style={{ color: colors.cream.light }}
+      >
         {overdue
           ? `Retrait recommandé il y a ${Math.abs(remaining)} jours`
           : remaining === 0
             ? "Retrait recommandé aujourd'hui"
             : `${remaining} jours restants — retrait conseillé le ${removeDate}`}
       </Text>
-      <View className="h-2 rounded-full overflow-hidden mt-3 mb-3" style={{ backgroundColor: "#3A0B10" }}>
+      <View
+        className="h-2 rounded-full overflow-hidden mt-3 mb-3"
+        style={{ backgroundColor: "#3A0B10" }}
+      >
         <View
           style={{
             width: `${overdue ? 100 : Math.min(100, ((daysSinceInstall(log.installed_on)) / Math.max(1, daysSinceInstall(log.installed_on) + remaining)) * 100)}%`,
@@ -186,62 +223,4 @@ function CurrentStyleCard({
 function daysSinceInstall(install: string): number {
   const ms = new Date().getTime() - new Date(install).getTime();
   return Math.max(0, Math.floor(ms / (1000 * 60 * 60 * 24)));
-}
-
-// -----------------------------------------------------------------------------
-// Style card (image or gradient placeholder)
-// -----------------------------------------------------------------------------
-
-function StyleCard({
-  style,
-  isCurrent,
-  onStart,
-}: {
-  style: Hairstyle;
-  isCurrent: boolean;
-  onStart: () => void;
-}) {
-  return (
-    <Pressable
-      onPress={isCurrent ? undefined : onStart}
-      className="bg-cream-light rounded-2xl overflow-hidden border border-cream-warm"
-      style={{ width: "48%" }}
-    >
-      <View className="h-36 bg-bordeaux items-center justify-center">
-        {HAIRSTYLE_PHOTOS[style.code] ? (
-          <Image
-            source={HAIRSTYLE_PHOTOS[style.code] as number}
-            style={{ width: "100%", height: "100%" }}
-            resizeMode="cover"
-          />
-        ) : (
-          <Text
-            variant="h3"
-            style={{
-              color: colors.cream.light,
-              textAlign: "center",
-              paddingHorizontal: 8,
-              fontSize: 14,
-              lineHeight: 18,
-            }}
-          >
-            {style.name}
-          </Text>
-        )}
-        {isCurrent ? (
-          <View className="absolute top-2 left-2 bg-cream-light rounded-full px-2 py-0.5">
-            <Text variant="caption" className="text-bordeaux">
-              ● En cours
-            </Text>
-          </View>
-        ) : null}
-      </View>
-      <View className="p-3">
-        <Text variant="body-medium" className="mb-0.5">
-          {style.name}
-        </Text>
-        <Text variant="caption">{durationLabel(style)}</Text>
-      </View>
-    </Pressable>
-  );
 }

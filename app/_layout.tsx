@@ -46,6 +46,7 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="wash" />
             <Stack.Screen name="learn" />
+            <Stack.Screen name="hairstyle" />
           </Stack>
         </QueryClientProvider>
       </SafeAreaProvider>
