@@ -29,7 +29,7 @@ export default function LearnScreen() {
             className="bg-cream-light rounded-2xl mb-3 overflow-hidden border border-cream-warm flex-row"
           >
             <Image
-              source={{ uri: r.hero_image }}
+              source={r.hero_image}
               style={{ width: 80, height: 80 }}
               resizeMode="cover"
             />
@@ -65,7 +65,7 @@ export default function LearnScreen() {
             className="bg-cream-light rounded-2xl mb-3 overflow-hidden border border-cream-warm flex-row"
           >
             <Image
-              source={{ uri: a.hero_image }}
+              source={a.hero_image}
               style={{ width: 80, height: 80 }}
               resizeMode="cover"
             />

@@ -27,7 +27,7 @@ export default function ArticleReader() {
         {/* Hero */}
         <View style={{ position: "relative", height: 240 }}>
           <Image
-            source={{ uri: article.hero_image }}
+            source={article.hero_image}
             style={{ width: "100%", height: 240 }}
             resizeMode="cover"
           />
@@ -160,7 +160,7 @@ function Section({ section }: { section: ArticleSection }) {
     return (
       <View className="my-4">
         <Image
-          source={{ uri: section.src }}
+          source={section.src}
           style={{ width: "100%", height: 200, borderRadius: 14 }}
           resizeMode="cover"
         />

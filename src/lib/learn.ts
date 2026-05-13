@@ -1,5 +1,8 @@
 // SB Haircare — Section Apprendre : recettes DIY + articles éducatifs
 
+// LearnImage = number when `require()`'d bundled asset, or { uri: string } for remote
+export type LearnImage = number | { uri: string };
+
 export type Ingredient = { icon: string; name: string; qty: string };
 
 export type RecipeStep = {
@@ -14,7 +17,7 @@ export type Recipe = {
   tag: string;
   duration: string;
   frequency: string;
-  hero_image: string;
+  hero_image: LearnImage;
   ingredients: Ingredient[];
   steps: RecipeStep[];
   tip?: string;
@@ -26,16 +29,31 @@ export type ArticleSection =
   | { type: "paragraph"; text: string }
   | { type: "step"; number: number; title: string; text: string }
   | { type: "callout"; text: string }
-  | { type: "image"; src: string; alt: string };
+  | { type: "image"; src: LearnImage; alt: string };
 
 export type Article = {
   id: string;
   title: string;
   subtitle: string;
   read_time: string;
-  hero_image: string;
+  hero_image: LearnImage;
   sections: ArticleSection[];
 };
+
+// -----------------------------------------------------------------------------
+// Brand photos bundled with the app — assets/learn/saba-img-*.jpg
+// -----------------------------------------------------------------------------
+
+const IMG_POWDERS_COCO = require("../../assets/learn/saba-img-powders-coco-bowl.jpg");
+const IMG_WET_STRETCHED = require("../../assets/learn/saba-img-wet-hair-stretched.jpg");
+const IMG_WASH_DAY = require("../../assets/learn/saba-img-wash-day-shower.jpg");
+const IMG_FLAXSEED_JAR = require("../../assets/learn/saba-img-flaxseed-gel-jar.jpg");
+const IMG_RINSE_BACK = require("../../assets/learn/saba-img-rinse-water-back.jpg");
+const IMG_SHRINKAGE = require("../../assets/learn/saba-img-shrinkage-stretch.jpg");
+const IMG_DEFINED_CURLS = require("../../assets/learn/saba-img-defined-curls.jpg");
+const IMG_SHED_HAIR = require("../../assets/learn/saba-img-shed-hair-hand.jpg");
+const IMG_PASTE_GARDEN = require("../../assets/learn/saba-img-paste-bowl-garden.jpg");
+const IMG_VOLUME_MIRROR = require("../../assets/learn/saba-img-volume-mirror.jpg");
 
 // -----------------------------------------------------------------------------
 // RECETTES DIY
@@ -48,8 +66,7 @@ export const RECIPES: Recipe[] = [
     tag: "Mélange pousse",
     duration: "45 min",
     frequency: "1x / semaine",
-    hero_image:
-      "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=800&q=80",
+    hero_image: IMG_POWDERS_COCO,
     ingredients: [
       { icon: "🌿", name: "Poudre de Bhringraj", qty: "2 c. à soupe" },
       { icon: "🍃", name: "Poudre de Brahmi", qty: "1 c. à soupe" },
@@ -88,8 +105,7 @@ export const RECIPES: Recipe[] = [
     tag: "Soin à l'huile",
     duration: "30 min + pose",
     frequency: "1x / semaine (pré-poo)",
-    hero_image:
-      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&q=80",
+    hero_image: IMG_WET_STRETCHED,
     ingredients: [
       { icon: "🫙", name: "Huile de ricin", qty: "2 c. à soupe" },
       { icon: "🫒", name: "Huile de jojoba ou pépins de raisin", qty: "2 c. à soupe" },
@@ -124,8 +140,7 @@ export const RECIPES: Recipe[] = [
     tag: "Masque clarifiant",
     duration: "20 min",
     frequency: "1x / mois max",
-    hero_image:
-      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80",
+    hero_image: IMG_WASH_DAY,
     ingredients: [
       { icon: "⚪", name: "Argile blanche (kaolin) ou verte", qty: "3 c. à soupe" },
       { icon: "💧", name: "Eau tiède ou hydrolat de romarin", qty: "Quantité suffisante" },
@@ -159,8 +174,7 @@ export const RECIPES: Recipe[] = [
     tag: "Glisse + hydratation",
     duration: "25 min",
     frequency: "Chaque wash day",
-    hero_image:
-      "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=800&q=80",
+    hero_image: IMG_FLAXSEED_JAR,
     ingredients: [
       { icon: "🌾", name: "Graines de lin", qty: "¼ tasse (~40g)" },
       { icon: "💧", name: "Eau", qty: "2 tasses (500 ml)" },
@@ -194,8 +208,7 @@ export const RECIPES: Recipe[] = [
     tag: "Brillance",
     duration: "20 min + refroidissement",
     frequency: "2x / mois",
-    hero_image:
-      "https://images.unsplash.com/photo-1596591868264-75e477740767?w=800&q=80",
+    hero_image: IMG_RINSE_BACK,
     ingredients: [
       { icon: "🌺", name: "Fleurs d'hibiscus séchées (ou 2 sachets de tisane)", qty: "2 c. à soupe" },
       { icon: "💧", name: "Eau bouillante", qty: "500 ml" },
@@ -230,8 +243,7 @@ export const ARTICLES: Article[] = [
     title: "Comment faire son bain d'huile",
     subtitle: "Le geste fondateur de ta routine capillaire",
     read_time: "4 min",
-    hero_image:
-      "https://images.unsplash.com/photo-1597223557154-721c1cecc4b0?w=800&q=80",
+    hero_image: IMG_SHRINKAGE,
     sections: [
       {
         type: "intro",
@@ -248,7 +260,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80",
+        src: IMG_WET_STRETCHED,
         alt: "Huiles végétales naturelles pour bain d'huile cheveux afro",
       },
       { type: "heading", text: "La méthode en 3 étapes" },
@@ -299,8 +311,7 @@ export const ARTICLES: Article[] = [
     title: "La rétention de longueur",
     subtitle: "Tes cheveux poussent. Le vrai problème, c'est la casse.",
     read_time: "5 min",
-    hero_image:
-      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+    hero_image: IMG_DEFINED_CURLS,
     sections: [
       {
         type: "intro",
@@ -317,8 +328,8 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1595959183082-7b570b7e1e2b?w=800&q=80",
-        alt: "Boucles 4C définies et hydratées",
+        src: IMG_SHED_HAIR,
+        alt: "Cheveux tombés dans la main",
       },
       { type: "heading", text: "Les 5 piliers de la rétention" },
       {
@@ -367,8 +378,7 @@ export const ARTICLES: Article[] = [
     title: "Les poudres ayurvédiques",
     subtitle: "Ce que la science dit sur ces plantes ancestrales",
     read_time: "6 min",
-    hero_image:
-      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80",
+    hero_image: IMG_POWDERS_COCO,
     sections: [
       {
         type: "intro",
@@ -381,8 +391,8 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "image",
-        src: "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=800&q=80",
-        alt: "Poudres ayurvédiques dans bols en coco",
+        src: IMG_PASTE_GARDEN,
+        alt: "Pâte ayurvédique dans bol blanc avec fleurs",
       },
       {
         type: "step",
@@ -430,8 +440,7 @@ export const ARTICLES: Article[] = [
     title: "La pousse : mythes et réalités",
     subtitle: "Ce qui marche vraiment vs ce qu'on te vend sur TikTok",
     read_time: "5 min",
-    hero_image:
-      "https://images.unsplash.com/photo-1611432579402-7037e3e2c1e4?w=800&q=80",
+    hero_image: IMG_VOLUME_MIRROR,
     sections: [
       {
         type: "intro",

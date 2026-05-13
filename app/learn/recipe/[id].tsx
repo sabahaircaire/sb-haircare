@@ -64,7 +64,7 @@ export default function RecipeReader() {
         {/* Hero */}
         <View style={{ position: "relative", height: 240 }}>
           <Image
-            source={{ uri: recipe.hero_image }}
+            source={recipe.hero_image}
             style={{ width: "100%", height: 240 }}
             resizeMode="cover"
           />
