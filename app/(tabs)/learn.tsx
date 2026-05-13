@@ -1,63 +1,86 @@
-import { View } from "react-native";
+import { View, Pressable, Image } from "react-native";
+import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
-import { Card } from "@/components/Card";
+import { Pill } from "@/components/Pill";
+import { RECIPES, ARTICLES } from "@/lib/learn";
 
 export default function LearnScreen() {
+  const router = useRouter();
   return (
     <ScreenContainer>
       <Text variant="label" className="mb-2">
         Apprendre
       </Text>
       <Text variant="h1" className="mb-6">
-        Recettes & rituels
+        Recettes & articles
       </Text>
 
-      <Card variant="bordeaux" className="mb-6">
-        <Text variant="label" className="text-ocre-soft mb-2">
-          Défi en cours
-        </Text>
-        <Text variant="h2" className="text-white mb-1">
-          Défi pousse 2026
-        </Text>
-        <Text variant="body" className="text-cream">
-          Rejoins le défi communauté · 365 jours
-        </Text>
-      </Card>
-
-      <Text variant="h3" className="mb-3">
-        Recettes DIY
-      </Text>
-      <View className="gap-3 mb-6">
-        {[
-          ["Herbes naturelles pour la pousse", "Mélange pousse"],
-          ["Huile chaude DIY", "Soin à l'huile"],
-          ["Masque à l'argile", "Masque clarifiant"],
-          ["Graines de lin + aloe", "Glisse + hydratation"],
-          ["Rinçage hibiscus", "Brillance"],
-        ].map(([name, tag]) => (
-          <Card key={name}>
-            <Text variant="h3">{name}</Text>
-            <Text variant="caption" className="mt-1">
-              {tag}
-            </Text>
-          </Card>
+      {/* Recettes DIY */}
+      <View className="flex-row items-baseline justify-between mb-3">
+        <Text variant="h3">🌿 Recettes DIY</Text>
+        <Text variant="caption">{RECIPES.length} recettes</Text>
+      </View>
+      <View className="mb-6">
+        {RECIPES.map((r) => (
+          <Pressable
+            key={r.id}
+            onPress={() => router.push(`/learn/recipe/${r.id}`)}
+            className="bg-cream-light rounded-2xl mb-3 overflow-hidden border border-cream-warm flex-row"
+          >
+            <Image
+              source={{ uri: r.hero_image }}
+              style={{ width: 80, height: 80 }}
+              resizeMode="cover"
+            />
+            <View className="flex-1 p-3 justify-center">
+              <Text variant="body-medium" className="mb-0.5" numberOfLines={1}>
+                {r.title}
+              </Text>
+              <Text variant="caption" className="mb-1">
+                {r.tag}
+              </Text>
+              <View className="flex-row gap-2">
+                <Text variant="caption" className="text-ocre-deep">
+                  ⏱ {r.duration}
+                </Text>
+                <Text variant="caption">·</Text>
+                <Text variant="caption">{r.frequency}</Text>
+              </View>
+            </View>
+          </Pressable>
         ))}
       </View>
 
-      <Text variant="h3" className="mb-3">
-        Articles
-      </Text>
-      <View className="gap-3">
-        {[
-          "Comment faire son bain d'huile",
-          "La rétention de longueur",
-          "Les poudres ayurvédiques",
-          "La pousse : mythes et réalités",
-        ].map((title) => (
-          <Card key={title} variant="outline">
-            <Text variant="body-medium">{title}</Text>
-          </Card>
+      {/* Articles */}
+      <View className="flex-row items-baseline justify-between mb-3">
+        <Text variant="h3">📖 Articles</Text>
+        <Text variant="caption">{ARTICLES.length} articles</Text>
+      </View>
+      <View>
+        {ARTICLES.map((a) => (
+          <Pressable
+            key={a.id}
+            onPress={() => router.push(`/learn/article/${a.id}`)}
+            className="bg-cream-light rounded-2xl mb-3 overflow-hidden border border-cream-warm flex-row"
+          >
+            <Image
+              source={{ uri: a.hero_image }}
+              style={{ width: 80, height: 80 }}
+              resizeMode="cover"
+            />
+            <View className="flex-1 p-3 justify-center">
+              <Text variant="body-medium" className="mb-0.5" numberOfLines={2}>
+                {a.title}
+              </Text>
+              <Text variant="caption" numberOfLines={1} className="mb-1">
+                {a.subtitle}
+              </Text>
+              <Text variant="caption" className="text-ocre-deep">
+                {a.read_time} de lecture
+              </Text>
+            </View>
+          </Pressable>
         ))}
       </View>
     </ScreenContainer>
