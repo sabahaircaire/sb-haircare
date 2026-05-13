@@ -49,7 +49,7 @@ export const RECIPES: Recipe[] = [
     duration: "45 min",
     frequency: "1x / semaine",
     hero_image:
-      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800&q=80",
+      "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=800&q=80",
     ingredients: [
       { icon: "🌿", name: "Poudre de Bhringraj", qty: "2 c. à soupe" },
       { icon: "🍃", name: "Poudre de Brahmi", qty: "1 c. à soupe" },
@@ -89,7 +89,7 @@ export const RECIPES: Recipe[] = [
     duration: "30 min + pose",
     frequency: "1x / semaine (pré-poo)",
     hero_image:
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80",
+      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&q=80",
     ingredients: [
       { icon: "🫙", name: "Huile de ricin", qty: "2 c. à soupe" },
       { icon: "🫒", name: "Huile de jojoba ou pépins de raisin", qty: "2 c. à soupe" },
@@ -125,7 +125,7 @@ export const RECIPES: Recipe[] = [
     duration: "20 min",
     frequency: "1x / mois max",
     hero_image:
-      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80",
+      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&q=80",
     ingredients: [
       { icon: "⚪", name: "Argile blanche (kaolin) ou verte", qty: "3 c. à soupe" },
       { icon: "💧", name: "Eau tiède ou hydrolat de romarin", qty: "Quantité suffisante" },
@@ -160,7 +160,7 @@ export const RECIPES: Recipe[] = [
     duration: "25 min",
     frequency: "Chaque wash day",
     hero_image:
-      "https://images.unsplash.com/photo-1599948128020-9a44505b0d1b?w=800&q=80",
+      "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=800&q=80",
     ingredients: [
       { icon: "🌾", name: "Graines de lin", qty: "¼ tasse (~40g)" },
       { icon: "💧", name: "Eau", qty: "2 tasses (500 ml)" },
@@ -195,7 +195,7 @@ export const RECIPES: Recipe[] = [
     duration: "20 min + refroidissement",
     frequency: "2x / mois",
     hero_image:
-      "https://images.unsplash.com/photo-1590735213920-68192a487bc2?w=800&q=80",
+      "https://images.unsplash.com/photo-1596591868264-75e477740767?w=800&q=80",
     ingredients: [
       { icon: "🌺", name: "Fleurs d'hibiscus séchées (ou 2 sachets de tisane)", qty: "2 c. à soupe" },
       { icon: "💧", name: "Eau bouillante", qty: "500 ml" },
@@ -231,7 +231,7 @@ export const ARTICLES: Article[] = [
     subtitle: "Le geste fondateur de ta routine capillaire",
     read_time: "4 min",
     hero_image:
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80",
+      "https://images.unsplash.com/photo-1597223557154-721c1cecc4b0?w=800&q=80",
     sections: [
       {
         type: "intro",
@@ -245,6 +245,11 @@ export const ARTICLES: Article[] = [
       {
         type: "paragraph",
         text: "Ce n'est pas un soin de surface. L'huile pénètre la cuticule et va nourrir le cortex. C'est pour ça qu'on le fait AVANT le shampoing — pas après.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&q=80",
+        alt: "Huiles végétales naturelles pour bain d'huile cheveux afro",
       },
       { type: "heading", text: "La méthode en 3 étapes" },
       {
@@ -295,7 +300,7 @@ export const ARTICLES: Article[] = [
     subtitle: "Tes cheveux poussent. Le vrai problème, c'est la casse.",
     read_time: "5 min",
     hero_image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80",
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
     sections: [
       {
         type: "intro",
@@ -309,6 +314,11 @@ export const ARTICLES: Article[] = [
       {
         type: "paragraph",
         text: "Ajoute à ça : manipulation excessive, coiffures trop serrées, manque d'hydratation, friction nocturne sur coton. Combinés, ils empêchent toute rétention.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1595959183082-7b570b7e1e2b?w=800&q=80",
+        alt: "Boucles 4C définies et hydratées",
       },
       { type: "heading", text: "Les 5 piliers de la rétention" },
       {
@@ -358,7 +368,7 @@ export const ARTICLES: Article[] = [
     subtitle: "Ce que la science dit sur ces plantes ancestrales",
     read_time: "6 min",
     hero_image:
-      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=800&q=80",
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80",
     sections: [
       {
         type: "intro",
@@ -368,6 +378,11 @@ export const ARTICLES: Article[] = [
       {
         type: "paragraph",
         text: "Toutes les poudres ne font pas la même chose. Les confondre, c'est perdre du temps et des résultats.",
+      },
+      {
+        type: "image",
+        src: "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=800&q=80",
+        alt: "Poudres ayurvédiques dans bols en coco",
       },
       {
         type: "step",
@@ -416,7 +431,7 @@ export const ARTICLES: Article[] = [
     subtitle: "Ce qui marche vraiment vs ce qu'on te vend sur TikTok",
     read_time: "5 min",
     hero_image:
-      "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80",
+      "https://images.unsplash.com/photo-1611432579402-7037e3e2c1e4?w=800&q=80",
     sections: [
       {
         type: "intro",
