@@ -339,11 +339,13 @@ export default function WashdayScreen() {
                 style={{ width: 130 }}
               >
                 <View className="h-28 bg-cream-warm relative">
-                  <Image
-                    source={p.photo}
-                    style={{ width: "100%", height: "100%" }}
-                    resizeMode="cover"
-                  />
+                  {p.image_url ? (
+                    <Image
+                      source={{ uri: p.image_url }}
+                      style={{ width: "100%", height: "100%" }}
+                      resizeMode="cover"
+                    />
+                  ) : null}
                   <View
                     style={{
                       position: "absolute",

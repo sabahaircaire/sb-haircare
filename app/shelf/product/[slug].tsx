@@ -70,11 +70,13 @@ export default function ProductDetail() {
               backgroundColor: colors.cream.warm,
             }}
           >
-            <Image
-              source={product.photo}
-              style={{ width: "100%", height: "100%" }}
-              resizeMode="cover"
-            />
+            {product.image_url ? (
+              <Image
+                source={{ uri: product.image_url }}
+                style={{ width: "100%", height: "100%" }}
+                resizeMode="cover"
+              />
+            ) : null}
           </View>
           <SafeAreaView edges={["top"]} className="absolute top-0 left-0 right-0">
             <Pressable
@@ -277,9 +279,9 @@ export default function ProductDetail() {
         ) : null}
 
         {/* Source */}
-        {product.source_url ? (
+        {product.product_url ? (
           <View className="px-5 pt-6">
-            <Pressable onPress={() => Linking.openURL(product.source_url!)}>
+            <Pressable onPress={() => Linking.openURL(product.product_url!)}>
               <Text variant="caption" className="text-bordeaux">
                 Voir sur le site officiel →
               </Text>

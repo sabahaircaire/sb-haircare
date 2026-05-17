@@ -58,7 +58,8 @@ export type MarketProduct = {
   name: string;
   brand: string;
   category: ProductCategory;
-  photo: { uri: string };                          // remote URL — bundle local later
+  image_url: string;                               // URL absolue (peut être '' avant scraping)
+  product_url?: string;                            // page produit officielle (utilisée par scrape-product-images.mjs)
   size?: string;                                   // "355ml" / "227g"
   price_eur?: number;                              // si connu
 
@@ -75,7 +76,6 @@ export type MarketProduct = {
 
   usage_guide: string;                             // markdown — quand/comment utiliser
   sb_alternative_slug?: string;                    // slug d'un produit SB Haircare équivalent
-  source_url?: string;                             // page produit officielle
 };
 
 // -----------------------------------------------------------------------------
@@ -89,9 +89,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     name: "Curl Activator Cream",
     brand: "Cantu",
     category: "cream",
-    photo: {
-      uri: "https://cantubeauty.com/cdn/shop/products/cantu-curl-activator-cream.jpg",
-    },
+    image_url: "",
+    product_url: "https://cantubeauty.com/products/curl-activator-cream",
     size: "355ml",
     price_eur: 8.99,
     short:
@@ -105,16 +104,15 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     usage_guide:
       "Sur cheveux mouillés après le leave-in. Section par section, scrunch pour activer. Méthode LOC : utilise comme étape Cream après ton huile.",
     sb_alternative_slug: "chantilly",
-    source_url: "https://cantubeauty.com/products/curl-activator-cream",
   },
   {
     slug: "shea-moisture-curl-enhancing-smoothie",
     name: "Curl Enhancing Smoothie Coconut & Hibiscus",
     brand: "SheaMoisture",
     category: "cream",
-    photo: {
-      uri: "https://www.sheamoisture.com/dw/image/v2/coconut-hibiscus-smoothie.jpg",
-    },
+    image_url: "",
+    product_url:
+      "https://www.sheamoisture.com/coconut-hibiscus-curl-enhancing-smoothie.html",
     size: "340g",
     price_eur: 12.99,
     short:
@@ -128,17 +126,14 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     usage_guide:
       "Sur cheveux humides après le leave-in, en méthode LCO (Crème après l'Huile). Distribue mèche par mèche pour définition optimale.",
     sb_alternative_slug: "chantilly",
-    source_url:
-      "https://www.sheamoisture.com/coconut-hibiscus-curl-enhancing-smoothie.html",
   },
   {
     slug: "as-i-am-leave-in-conditioner",
     name: "Leave-In Conditioner",
     brand: "As I Am",
     category: "leave_in",
-    photo: {
-      uri: "https://asiamnaturally.com/cdn/shop/products/leave-in-conditioner.jpg",
-    },
+    image_url: "",
+    product_url: "https://asiamnaturally.com/products/leave-in-conditioner",
     size: "237ml",
     price_eur: 10.5,
     short:
@@ -152,16 +147,14 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     usage_guide:
       "Première étape post-shampoing sur cheveux humides. Vaporise et démêle aux doigts. Méthode LOC : étape Liquid.",
     sb_alternative_slug: "chantilly",
-    source_url: "https://asiamnaturally.com/products/leave-in-conditioner",
   },
   {
     slug: "mielle-pomegranate-honey-leave-in",
     name: "Pomegranate & Honey Leave-In Conditioner",
     brand: "Mielle Organics",
     category: "leave_in",
-    photo: {
-      uri: "https://mielleorganics.com/cdn/shop/products/pomegranate-honey.jpg",
-    },
+    image_url: "",
+    product_url: "https://mielleorganics.com/products/pomegranate-honey",
     size: "237ml",
     price_eur: 11.99,
     short:
@@ -175,16 +168,14 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     usage_guide:
       "Sur cheveux humides après le shampoing. Particulièrement adapté aux 4B/4C très secs ou demandant beaucoup d'hydratation.",
     sb_alternative_slug: "chantilly",
-    source_url: "https://mielleorganics.com/products/pomegranate-honey",
   },
   {
     slug: "jamaican-mango-lime-black-castor-oil",
     name: "Black Castor Oil",
     brand: "Jamaican Mango & Lime",
     category: "oil",
-    photo: {
-      uri: "https://jamaicanmangoandlime.com/cdn/shop/products/black-castor-oil.jpg",
-    },
+    image_url: "",
+    product_url: "https://jamaicanmangoandlime.com/products/black-castor-oil",
     size: "118ml",
     price_eur: 7.99,
     short:
@@ -198,8 +189,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     usage_guide:
       "Quelques gouttes sur le cuir chevelu en massage, ou comme scellant LOC sur les pointes. Trop épaisse pour les porosités faibles — mélange à une huile plus légère (jojoba).",
     sb_alternative_slug: "huile-raiponce",
-    source_url:
-      "https://jamaicanmangoandlime.com/products/black-castor-oil",
   },
 
   // ─────────────────────────────────────────────────────────────────────────

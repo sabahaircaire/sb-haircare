@@ -219,11 +219,13 @@ export default function BrowseShelf() {
                 style={{ width: "48%" }}
               >
                 <View className="h-32 bg-cream-warm relative">
-                  <Image
-                    source={p.photo}
-                    style={{ width: "100%", height: "100%" }}
-                    resizeMode="cover"
-                  />
+                  {p.image_url ? (
+                    <Image
+                      source={{ uri: p.image_url }}
+                      style={{ width: "100%", height: "100%" }}
+                      resizeMode="cover"
+                    />
+                  ) : null}
                   <View
                     style={{
                       position: "absolute",
