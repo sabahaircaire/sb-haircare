@@ -46,8 +46,6 @@ export default function WashdayScreen() {
 
   const load = useWashSchedule((s) => s.load);
   const scheduled = useWashSchedule((s) => s.scheduled);
-  const schedule = useWashSchedule((s) => s.schedule);
-  const unschedule = useWashSchedule((s) => s.unschedule);
   const loaded = useWashSchedule((s) => s.loaded);
 
   useEffect(() => {
@@ -84,12 +82,7 @@ export default function WashdayScreen() {
 
   const onTapDay = (iso: string) => {
     if (isPast(iso) && iso !== today) return;
-    const existing = scheduled.find((s) => s.date === iso);
-    if (existing) {
-      unschedule(iso);
-    } else {
-      schedule(iso, "jour_de_lavage");
-    }
+    router.push(`/wash/plan?date=${iso}`);
   };
 
   return (
