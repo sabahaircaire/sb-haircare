@@ -353,7 +353,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "As I Am",
     name: "Coconut CoWash Cleansing Conditioner",
     category: "co-wash",
-    image_url: "",
+    image_url: "https://asiamnaturally.com/cdn/shop/products/02.AsIAmClassic_CoconutCowashsquare.jpg?v=1678475184",
     product_url: "https://asiamnaturally.com/products/coconut-cowash",
     inci:
       "Water, Cetearyl Alcohol, Hibiscus Sabdariffa Flower Powder, " +
@@ -377,7 +377,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "As I Am",
     name: "Leave-In Conditioner",
     category: "leave-in",
-    image_url: "",
+    image_url: "https://asiamnaturally.com/cdn/shop/files/coconut_leave_in_conditioner_8_oz_1.png?v=1766507601",
     product_url: "https://asiamnaturally.com/products/leave-in-conditioner",
     inci:
       "Water, Behentrimonium Methosulfate, Cetyl Alcohol, " +
@@ -400,7 +400,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "As I Am",
     name: "DoubleButter Cream",
     category: "creme",
-    image_url: "",
+    image_url: "https://asiamnaturally.com/cdn/shop/products/05.AsIAmClassic_DoublebutterCreamsquare_c1c6723b-2b63-4751-af07-40ea392f40d1.jpg?v=1661198527",
     product_url: "https://asiamnaturally.com/products/doublebutter-cream",
     inci:
       "Water, Ricinus Communis (Castor) Seed Oil, Behentrimonium Methosulfate, " +
@@ -500,7 +500,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Aunt Jackie's",
     name: "Curl La La Defining Curl Custard",
     category: "creme",
-    image_url: "",
+    image_url: "https://www.auntjackiescurlsandcoils.com/cdn/shop/files/9-696-15_AJ_CLL_CurlDefiningCustard_15ozJar_FRONT.jpg?v=1767114415",
     product_url:
       "https://www.auntjackiescurlsandcoils.com/products/curl-la-la-defining-curl-custard",
     inci:
@@ -551,7 +551,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Mielle Organics",
     name: "Pomegranate & Honey Leave-In Conditioner",
     category: "leave-in",
-    image_url: "",
+    image_url: "https://mielleorganics.com/cdn/shop/files/Packshot_908ea048-61e8-457a-8fdf-6ce889427d44_600x.jpg?v=1761168863",
     product_url:
       "https://mielleorganics.com/products/pomegranate-honey-leave-in-conditioner",
     inci:
@@ -574,7 +574,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Mielle Organics",
     name: "Babassu & Mint Deep Conditioner",
     category: "masque",
-    image_url: "",
+    image_url: "https://mielleorganics.com/cdn/shop/files/Packshot_Mielle_SHAseal_BabMint_DeepCond_8oz_En_80835620_2048px_600x.jpg?v=1759329346",
     product_url:
       "https://mielleorganics.com/products/babassu-mint-deep-conditioner",
     inci:
@@ -601,7 +601,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Camille Rose",
     name: "Curl Maker",
     category: "gel",
-    image_url: "",
+    image_url: "https://www.camillerose.com/cdn/shop/files/ProductCard_Signature_CurlMaker.webp?v=1772794164",
     product_url: "https://www.camillerose.com/products/curl-maker",
     inci:
       "Aqua (Water), Glycerin, Althaea Officinalis (Marshmallow) Root Extract, " +
@@ -625,7 +625,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Camille Rose",
     name: "Almond Jai Twisting Butter",
     category: "creme",
-    image_url: "",
+    image_url: "https://www.camillerose.com/cdn/shop/files/ProductCard_Signature_AlmondJai.webp?v=1772792913",
     product_url: "https://www.camillerose.com/products/almond-jai-twisting-butter",
     inci:
       "Aqua (Water), Glycerin, Cetearyl Alcohol, " +
@@ -904,7 +904,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Design Essentials",
     name: "Natural Almond & Avocado Curl Enhancing Mousse",
     category: "creme",
-    image_url: "",
+    image_url: "https://designessentials.com/cdn/shop/files/AA-CurlEnhancingMousse-10oz-FRONT-0124-WO_1500x1500_e731438a-aaea-45ec-bdbb-5013a5e2b148.jpg?v=1752787707",
     product_url:
       "https://www.designessentials.com/products/almond-avocado-curl-enhancing-mousse",
     inci:
@@ -928,7 +928,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Design Essentials",
     name: "Natural Almond & Avocado Daily Moisturizing Lotion",
     category: "leave-in",
-    image_url: "",
+    image_url: "https://designessentials.com/cdn/shop/files/design-essentials-diverse-hair-textures-women-1920x1281.webp?v=1758514792",
     product_url:
       "https://www.designessentials.com/products/almond-avocado-daily-moisturizing-lotion",
     inci:
@@ -955,7 +955,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "TGIN",
     name: "Honey Miracle Hair Mask",
     category: "masque",
-    image_url: "",
+    image_url: "https://tginatural.com/cdn/shop/files/Honey_Miracle_December_2025_2.png?v=1765391878&width=1024",
     product_url: "https://tginatural.com/products/honey-miracle-hair-mask",
     inci:
       "Water, Behentrimonium Methosulfate, Cetearyl Alcohol, Glycerin, " +
