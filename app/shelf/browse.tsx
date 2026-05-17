@@ -23,12 +23,12 @@ import { useProfile } from "@/lib/hooks/useProfile";
 
 const CATEGORY_FILTERS: { value: ProductCategory | "all"; label: string }[] = [
   { value: "all", label: "Tout" },
-  { value: "leave_in", label: "Leave-in" },
-  { value: "cream", label: "Crème" },
-  { value: "mask", label: "Masque" },
-  { value: "oil", label: "Huile" },
-  { value: "shampoo", label: "Shampoing" },
-  { value: "cowash", label: "Co-wash" },
+  { value: "leave-in", label: "Leave-in" },
+  { value: "creme", label: "Crème" },
+  { value: "masque", label: "Masque" },
+  { value: "huile", label: "Huile" },
+  { value: "shampoing", label: "Shampoing" },
+  { value: "co-wash", label: "Co-wash" },
   { value: "gel", label: "Gel" },
 ];
 
@@ -51,7 +51,7 @@ export default function BrowseShelf() {
     return MARKET_PRODUCTS.filter((p) => {
       if (cat !== "all" && p.category !== cat) return false;
       if (ql) {
-        const blob = `${p.name} ${p.brand} ${p.ingredients_key.join(" ")}`.toLowerCase();
+        const blob = `${p.name} ${p.brand} ${p.inci}`.toLowerCase();
         if (!blob.includes(ql)) return false;
       }
       if (onlyMyMatch && profile) {

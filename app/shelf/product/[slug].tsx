@@ -18,6 +18,7 @@ import {
   BADGE_META,
   FLAG_LABELS,
   CATEGORY_LABELS_MARKET,
+  activeFlags,
 } from "@/lib/marketCatalog";
 import { useUserShelf } from "@/store/userShelf";
 import { useProfile, porosityLabel } from "@/lib/hooks/useProfile";
@@ -54,9 +55,8 @@ export default function ProductDetail() {
     : undefined;
 
   const ingScore = { A: 5, B: 4, C: 3, D: 2, E: 1 }[product.ingredients_grade];
-  const porosityScore = profile?.porosity
-    ? product.good_for_porosity[profile.porosity]
-    : null;
+  const porosityScore = product.good_for_porosity;
+  const productFlags = activeFlags(product.flags);
 
   return (
     <View className="flex-1 bg-cream">
@@ -103,23 +103,19 @@ export default function ProductDetail() {
                 {CATEGORY_LABELS_MARKET[product.category]}
               </Text>
             </Pill>
-            {product.size ? (
-              <Pill variant="soft">
-                <Text variant="caption" className="text-bordeaux">
-                  {product.size}
-                </Text>
-              </Pill>
-            ) : null}
-            {product.price_eur ? (
-              <Pill variant="soft">
-                <Text variant="caption" className="text-bordeaux">
-                  ~{product.price_eur.toFixed(2)} €
-                </Text>
-              </Pill>
-            ) : null}
+            <Pill variant="soft">
+              <Text variant="caption" className="text-bordeaux">
+                {product.size_ml} ml
+              </Text>
+            </Pill>
+            <Pill variant="soft">
+              <Text variant="caption" className="text-bordeaux">
+                ~{product.price_eur.toFixed(2)} €
+              </Text>
+            </Pill>
           </View>
           <Text variant="body" style={{ lineHeight: 22 }}>
-            {product.short}
+            {product.usage_guide}
           </Text>
         </View>
 
@@ -182,37 +178,37 @@ export default function ProductDetail() {
               hint={product.ingredients_grade}
             />
             <SubScore
-              icon="✨"
-              label="ADN SB"
-              value={product.sb_brand_score}
+              icon="🎯"
+              label="Type cheveux"
+              value={product.good_for_type}
+              hint={profile?.hair_type?.toUpperCase() ?? "?"}
             />
           </View>
         </View>
 
-        {/* Ingredients key */}
+        {/* INCI */}
         <View className="px-5 pt-6">
           <Text variant="label" className="mb-2">
-            🌱 Ingrédients clés
+            🌱 INCI
           </Text>
-          <View className="flex-row flex-wrap gap-2">
-            {product.ingredients_key.map((ing, i) => (
-              <Pill key={i} variant="ocre">
-                <Text variant="caption" className="text-ocre-deep">
-                  {ing}
-                </Text>
-              </Pill>
-            ))}
-          </View>
+          <Card variant="outline">
+            <Text
+              variant="caption"
+              style={{ lineHeight: 18, color: colors.ink.soft }}
+            >
+              {product.inci}
+            </Text>
+          </Card>
         </View>
 
         {/* Flags */}
-        {product.flags.length ? (
+        {productFlags.length ? (
           <View className="px-5 pt-6">
             <Text variant="label" className="mb-2">
-              🏷 Composition
+              🏷 À surveiller
             </Text>
             <View className="flex-row flex-wrap gap-2">
-              {product.flags.map((f) => {
+              {productFlags.map((f) => {
                 const m = FLAG_LABELS[f];
                 return (
                   <View
@@ -241,18 +237,6 @@ export default function ProductDetail() {
           </View>
         ) : null}
 
-        {/* Usage guide */}
-        <View className="px-5 pt-6">
-          <Text variant="label" className="mb-2">
-            🪮 Comment l'utiliser
-          </Text>
-          <Card variant="outline">
-            <Text variant="body" style={{ lineHeight: 22 }}>
-              {product.usage_guide}
-            </Text>
-          </Card>
-        </View>
-
         {/* Cross-sell SB Haircare */}
         {sbAlt && (badge === "ok" || badge === "avoid") ? (
           <View className="px-5 pt-6">
@@ -264,7 +248,7 @@ export default function ProductDetail() {
                 Essaie {sbAlt.name}
               </Text>
               <Text variant="body" style={{ color: colors.cream.light }} className="mb-3">
-                {sbAlt.short}
+                {sbAlt.short ?? sbAlt.name}
               </Text>
               <Pressable
                 onPress={() => Linking.openURL(sbAlt.url)}
