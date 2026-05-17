@@ -2,6 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "./supabase";
 import type { WashDayFlow } from "./db-types";
 
+// Bundled brand photos for flows. Fallback to bordeaux placeholder otherwise.
+export const FLOW_PHOTOS: Record<string, number | undefined> = {
+  jour_de_lavage: require("../../assets/learn/saba-img-wash-day-shower.jpg"),
+  bain_huile: require("../../assets/learn/saba-img-wet-hair-stretched.jpg"),
+  masque_ayurvedique: require("../../assets/learn/saba-img-masque-hibiscus-bowl.jpg"),
+  hydrater: require("../../assets/learn/saba-img-defined-curls.jpg"),
+  remise_en_forme_cuir_chevelu: require("../../assets/learn/saba-img-curl-closeup-hand.jpg"),
+  dormir_satin: require("../../assets/learn/saba-img-volume-mirror.jpg"),
+};
+
 // Local fallback so the app works offline / before Supabase is provisioned.
 const LOCAL_FLOWS: WashDayFlow[] = [
   {
@@ -233,16 +243,22 @@ const LOCAL_FLOWS: WashDayFlow[] = [
 export function useWashDayFlows() {
   return useQuery<WashDayFlow[]>({
     queryKey: ["wash_day_flows"],
+    // Seed with local templates so the UI never flashes empty.
+    initialData: LOCAL_FLOWS,
     queryFn: async () => {
-      // Try Supabase first; fall back to local templates if env not set or query fails.
+      // Try Supabase, fall back to local templates on any failure.
       if (!process.env.EXPO_PUBLIC_SUPABASE_URL) return LOCAL_FLOWS;
-      const { data, error } = await supabase
-        .from("wash_day_flows")
-        .select("*")
-        .eq("active", true)
-        .order("total_duration_min", { ascending: true });
-      if (error || !data || data.length === 0) return LOCAL_FLOWS;
-      return data as WashDayFlow[];
+      try {
+        const { data, error } = await supabase
+          .from("wash_day_flows")
+          .select("*")
+          .eq("active", true)
+          .order("total_duration_min", { ascending: true });
+        if (error || !data || data.length === 0) return LOCAL_FLOWS;
+        return data as WashDayFlow[];
+      } catch {
+        return LOCAL_FLOWS;
+      }
     },
     staleTime: 1000 * 60 * 60,
   });
