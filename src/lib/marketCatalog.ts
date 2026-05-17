@@ -424,9 +424,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "As I Am",
     name: "Hydration Elation Intensive Conditioner",
     category: "masque",
-    image_url: "",
-    product_url:
-      "https://asiamnaturally.com/products/hydration-elation-intensive-conditioner",
+    image_url: "https://cdn.shopify.com/s/files/1/2241/0171/files/Classic_coconut_hydration_elation.png?v=1765214920",
+    product_url: "https://asiamnaturally.com/products/hydration-elation",
     inci:
       "Water, Cetyl Alcohol, Stearalkonium Chloride, Mangifera Indica (Mango) Seed Butter, " +
       "Coffea Arabica Seed Extract, Hibiscus Sabdariffa Flower Powder, " +
@@ -452,9 +451,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Aunt Jackie's",
     name: "Don't Shrink Flaxseed Elongating Curling Gel",
     category: "gel",
-    image_url: "",
-    product_url:
-      "https://www.auntjackiescurlsandcoils.com/products/dont-shrink-flaxseed-elongating-curling-gel",
+    image_url: "https://cdn.shopify.com/s/files/1/0573/6123/6126/files/34285692155_AUNTJACKIES_DontShrinkCurlingGel_15ozJar_FRONT_94f868b4-bb0d-4328-aa67-ade6ed7b2648.jpg?v=1744305715",
+    product_url: "https://www.auntjackiescurlsandcoils.com/products/dont-shrink-elongating-curling-gel",
     inci:
       "Water, Glycerin, Linum Usitatissimum (Linseed) Seed Extract, " +
       "Polyquaternium-11, PVP, Carbomer, Aminomethyl Propanol, " +
@@ -476,9 +474,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Aunt Jackie's",
     name: "Quench Moisture Intensive Leave-In Conditioner",
     category: "leave-in",
-    image_url: "",
-    product_url:
-      "https://www.auntjackiescurlsandcoils.com/products/quench-moisture-intensive-leave-in-conditioner",
+    image_url: "https://cdn.shopify.com/s/files/1/0573/6123/6126/files/34285693060_AUNTJACKIES_Quench_8ozBottle_FRONT.jpg?v=1752761788",
+    product_url: "https://www.auntjackiescurlsandcoils.com/products/quench-moisture-intensive-leave-in-conditioner-2",
     inci:
       "Water, Cetearyl Alcohol, Behentrimonium Methosulfate, Glycerin, " +
       "Linum Usitatissimum (Linseed) Seed Extract, Cocos Nucifera (Coconut) Oil, " +
@@ -527,9 +524,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Mielle Organics",
     name: "Rosemary Mint Scalp & Hair Strengthening Oil",
     category: "huile",
-    image_url: "",
-    product_url:
-      "https://mielleorganics.com/products/rosemary-mint-scalp-hair-strengthening-oil",
+    image_url: "https://cdn.shopify.com/s/files/1/0763/8199/files/Rosemary_Oil_SHAcopy.jpg?v=1764011088",
+    product_url: "https://mielleorganics.com/products/rosemary-mint-oil",
     inci:
       "Olea Europaea (Olive) Fruit Oil, Helianthus Annuus (Sunflower) Seed Oil, " +
       "Mentha Arvensis Leaf Extract, Mentha Piperita (Peppermint) Oil, " +
@@ -648,9 +644,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Camille Rose",
     name: "Algae Renew Deep Conditioner",
     category: "masque",
-    image_url: "",
-    product_url:
-      "https://www.camillerose.com/products/algae-renew-deep-conditioner",
+    image_url: "https://cdn.shopify.com/s/files/1/0980/9736/files/ProductCard_Signature_AlgaeRenew.webp?v=1772792750",
+    product_url: "https://www.camillerose.com/products/algae-renew-deep-conditioning-max",
     inci:
       "Aqua (Water), Cetearyl Alcohol, Behentrimonium Methosulfate, Glycerin, " +
       "Persea Gratissima (Avocado) Oil, Mangifera Indica (Mango) Seed Butter, " +
@@ -794,9 +789,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Hask",
     name: "Argan Oil from Morocco Repairing Deep Conditioner",
     category: "masque",
-    image_url: "",
-    product_url:
-      "https://www.haskbeauty.com/products/argan-oil-repairing-deep-conditioner",
+    image_url: "https://cdn.shopify.com/s/files/1/0575/1390/2193/files/1_Repair_DC_Sachet_FRT_2500px.png?v=1764947897",
+    product_url: "https://www.haskbeauty.com/products/repair-arganoil-deep-conditioner",
     inci:
       "Water, Cetearyl Alcohol, Glycerin, Behentrimonium Methosulfate, " +
       "Argania Spinosa Kernel Oil, Cyclopentasiloxane, Dimethicone, " +
@@ -822,9 +816,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Hask",
     name: "Monoi Coconut Oil Nourishing Deep Conditioner",
     category: "masque",
-    image_url: "",
-    product_url:
-      "https://www.haskbeauty.com/products/monoi-coconut-oil-nourishing-deep-conditioner",
+    image_url: "https://cdn.shopify.com/s/files/1/0575/1390/2193/files/1_Hydrate_DC_FRT_2500px.png?v=1764949489",
+    product_url: "https://www.haskbeauty.com/products/hydrate-coconutoil-deep-conditioner",
     inci:
       "Water, Cetearyl Alcohol, Cocos Nucifera (Coconut) Oil (Monoi de Tahiti), " +
       "Behentrimonium Methosulfate, Cyclopentasiloxane, Dimethicone, Glycerin, " +
@@ -978,8 +971,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "TGIN",
     name: "Butter Cream Daily Moisturizer",
     category: "creme",
-    image_url: "",
-    product_url: "https://tginatural.com/products/butter-cream-daily-moisturizer",
+    image_url: "https://cdn.shopify.com/s/files/1/0716/9540/1252/files/BUTTER-CREAM-EDIT-02.png?v=1743537797",
+    product_url: "https://tginatural.com/products/butter-cream-daily-moisturizer-for-natural-hair-12oz-1",
     inci:
       "Water, Glycerin, Cetearyl Alcohol, Butyrospermum Parkii (Shea) Butter, " +
       "Behentrimonium Methosulfate, Cocos Nucifera (Coconut) Oil, " +
@@ -1000,9 +993,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "TGIN",
     name: "Triple Moisture Replenishing Conditioner",
     category: "masque",
-    image_url: "",
-    product_url:
-      "https://tginatural.com/products/triple-moisture-replenishing-conditioner",
+    image_url: "https://cdn.shopify.com/s/files/1/0716/9540/1252/files/Triple_Moisture_Replenishing_Conditioner_with_pump.png?v=1727792885",
+    product_url: "https://tginatural.com/products/triple-moisture-replenishing-conditioner-13oz",
     inci:
       "Water, Cetearyl Alcohol, Behentrimonium Methosulfate, Glycerin, " +
       "Butyrospermum Parkii (Shea) Butter, Mangifera Indica (Mango) Seed Butter, " +
@@ -1027,9 +1019,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "The Mane Choice",
     name: "Easy On The Curls Detangling Hydration Conditioner",
     category: "masque",
-    image_url: "",
-    product_url:
-      "https://themanechoice.com/products/easy-on-the-curls-detangling-conditioner",
+    image_url: "https://cdn.shopify.com/s/files/1/0727/7525/files/TMC_TheAlpha_Shampoo_8oz_PDP_1-1_PackShot_Front_Shadow.jpg?v=1737413093",
+    product_url: "https://themanechoice.com/products/the-alpha-easy-on-the-curls-detangling-hydration-shampoo",
     inci:
       "Water, Cetearyl Alcohol, Behentrimonium Methosulfate, Glycerin, " +
       "Persea Gratissima (Avocado) Oil, Mangifera Indica (Mango) Seed Butter, " +
@@ -1101,8 +1092,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Les Secrets de Loly",
     name: "Sublime Curl — Crème Coiffante Hydratante",
     category: "creme",
-    image_url: "",
-    product_url: "https://www.lessecretsdeloly.com/products/sublime-curl",
+    image_url: "https://cdn.shopify.com/s/files/1/0555/6197/8056/files/ROUTINEBOUCLEEPACKSHOT.webp?v=1748339570",
+    product_url: "https://www.lessecretsdeloly.com/products/routine-curly-speciale-cheveux-boucles",
     inci:
       "Aqua (Water), Glycerin, Cetearyl Alcohol, " +
       "Butyrospermum Parkii (Shea) Butter, Behentrimonium Methosulfate, " +
@@ -1125,8 +1116,8 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     brand: "Les Secrets de Loly",
     name: "Fleur de Coco — Masque Hydra-Nutritif",
     category: "masque",
-    image_url: "",
-    product_url: "https://www.lessecretsdeloly.com/products/fleur-de-coco",
+    image_url: "https://cdn.shopify.com/s/files/1/0555/6197/8056/files/Hyalu_Fusion_Mask_cheveux_multi-textures_1__11zon.jpg?v=1745586940",
+    product_url: "https://www.lessecretsdeloly.com/products/hyalu-fusion-mask-masque-activateur-de-boucles",
     inci:
       "Aqua (Water), Cetearyl Alcohol, Behentrimonium Methosulfate, Glycerin, " +
       "Cocos Nucifera (Coconut) Oil, Butyrospermum Parkii (Shea) Butter, " +
