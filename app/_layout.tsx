@@ -47,6 +47,7 @@ export default function RootLayout() {
             <Stack.Screen name="wash" />
             <Stack.Screen name="learn" />
             <Stack.Screen name="hairstyle" />
+            <Stack.Screen name="shelf" />
           </Stack>
         </QueryClientProvider>
       </SafeAreaProvider>

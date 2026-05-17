@@ -20,6 +20,13 @@ import {
   nextNDays,
 } from "@/store/washSchedule";
 import { PRODUCTS } from "@/lib/products";
+import {
+  MARKET_PRODUCTS,
+  computeMatchBadge,
+  BADGE_META,
+} from "@/lib/marketCatalog";
+import { useUserShelf } from "@/store/userShelf";
+import { useProfile } from "@/lib/hooks/useProfile";
 import type { WashDayFlow } from "@/lib/db-types";
 
 const WEEKDAYS_SHORT = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
@@ -43,6 +50,24 @@ export default function WashdayScreen() {
   const todaySched = scheduled.find((s) => s.date === today);
   const upcoming = scheduled.find((s) => !isPast(s.date) && s.date !== today);
   const days14 = useMemo(() => nextNDays(14), []);
+
+  // User shelf (market products)
+  const loadShelf = useUserShelf((s) => s.load);
+  const shelfItems = useUserShelf((s) => s.items);
+  const shelfLoaded = useUserShelf((s) => s.loaded);
+  const { data: profile } = useProfile();
+
+  useEffect(() => {
+    if (!shelfLoaded) loadShelf();
+  }, [shelfLoaded, loadShelf]);
+
+  const userShelfProducts = useMemo(
+    () =>
+      shelfItems
+        .map((i) => MARKET_PRODUCTS.find((p) => p.slug === i.product_slug))
+        .filter((p): p is (typeof MARKET_PRODUCTS)[number] => !!p),
+    [shelfItems],
+  );
 
   const launch = (flow: WashDayFlow) => {
     startFlow(flow);
@@ -225,12 +250,17 @@ export default function WashdayScreen() {
         ))}
       </View>
 
-      {/* Étagère produit */}
-      <Text variant="label" className="mb-3">
-        🧴 Ton étagère wash day
-      </Text>
+      {/* Étagère produit mixte */}
+      <View className="flex-row items-center justify-between mb-3">
+        <Text variant="label">🧴 Ton étagère wash day</Text>
+        <Pressable onPress={() => router.push("/shelf/browse")}>
+          <Text variant="caption" className="text-bordeaux">
+            + Ajouter
+          </Text>
+        </Pressable>
+      </View>
       <Text variant="caption" className="mb-3">
-        Les produits SB Haircare à avoir sous la main
+        Tes produits SB Haircare et ceux que tu as choisis
       </Text>
       <ScrollView
         horizontal
@@ -238,18 +268,41 @@ export default function WashdayScreen() {
         contentContainerStyle={{ paddingRight: 16 }}
       >
         <View className="flex-row gap-3">
+          {/* SB Haircare always first */}
           {PRODUCTS.map((p) => (
             <View
-              key={p.slug}
+              key={`sb-${p.slug}`}
               className="bg-cream-light rounded-2xl border border-cream-warm overflow-hidden"
               style={{ width: 130 }}
             >
-              <View className="h-28 bg-cream-warm">
+              <View className="h-28 bg-cream-warm relative">
                 <Image
                   source={{ uri: p.image }}
                   style={{ width: "100%", height: "100%" }}
                   resizeMode="cover"
                 />
+                <View
+                  style={{
+                    position: "absolute",
+                    top: 6,
+                    left: 6,
+                    backgroundColor: "#1F7A3D",
+                    borderRadius: 999,
+                    paddingHorizontal: 7,
+                    paddingVertical: 1,
+                  }}
+                >
+                  <Text
+                    variant="caption"
+                    style={{
+                      color: colors.white,
+                      fontSize: 9,
+                      fontFamily: "Inter_600SemiBold",
+                    }}
+                  >
+                    ★ SB
+                  </Text>
+                </View>
               </View>
               <View className="p-2">
                 <Text
@@ -269,6 +322,91 @@ export default function WashdayScreen() {
               </View>
             </View>
           ))}
+
+          {/* User shelf market products */}
+          {userShelfProducts.map((p) => {
+            const { badge } = computeMatchBadge(
+              p,
+              profile?.porosity,
+              profile?.hair_type,
+            );
+            const meta = BADGE_META[badge];
+            return (
+              <Pressable
+                key={`user-${p.slug}`}
+                onPress={() => router.push(`/shelf/product/${p.slug}`)}
+                className="bg-cream-light rounded-2xl border border-cream-warm overflow-hidden"
+                style={{ width: 130 }}
+              >
+                <View className="h-28 bg-cream-warm relative">
+                  <Image
+                    source={p.photo}
+                    style={{ width: "100%", height: "100%" }}
+                    resizeMode="cover"
+                  />
+                  <View
+                    style={{
+                      position: "absolute",
+                      top: 6,
+                      left: 6,
+                      backgroundColor: meta.color,
+                      borderRadius: 999,
+                      paddingHorizontal: 6,
+                      paddingVertical: 1,
+                    }}
+                  >
+                    <Text
+                      variant="caption"
+                      style={{
+                        color: colors.white,
+                        fontSize: 9,
+                        fontFamily: "Inter_600SemiBold",
+                      }}
+                    >
+                      {meta.emoji}
+                    </Text>
+                  </View>
+                </View>
+                <View className="p-2">
+                  <Text
+                    variant="caption"
+                    style={{
+                      color: colors.ink.muted,
+                      fontSize: 10,
+                      fontFamily: "Inter_500Medium",
+                    }}
+                  >
+                    {p.brand}
+                  </Text>
+                  <Text
+                    variant="caption"
+                    numberOfLines={2}
+                    style={{
+                      color: colors.ink.DEFAULT,
+                      fontFamily: "Inter_600SemiBold",
+                      lineHeight: 16,
+                    }}
+                  >
+                    {p.name}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          })}
+
+          {/* Add CTA */}
+          <Pressable
+            onPress={() => router.push("/shelf/browse")}
+            className="rounded-2xl border-2 border-dashed border-cream-warm items-center justify-center"
+            style={{ width: 130, minHeight: 168 }}
+          >
+            <Text variant="h2" className="text-ink-muted mb-1">
+              +
+            </Text>
+            <Text variant="caption" className="text-ink-muted text-center px-2">
+              Ajouter un produit
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
     </ScreenContainer>

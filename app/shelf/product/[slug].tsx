@@ -1,0 +1,354 @@
+import { useLocalSearchParams, useRouter } from "expo-router";
+import {
+  ScrollView,
+  View,
+  Image,
+  Pressable,
+  Linking,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text } from "@/components/Text";
+import { Card } from "@/components/Card";
+import { Pill } from "@/components/Pill";
+import { Button } from "@/components/Button";
+import { colors } from "@/theme/colors";
+import {
+  getMarketProduct,
+  computeMatchBadge,
+  BADGE_META,
+  FLAG_LABELS,
+  CATEGORY_LABELS_MARKET,
+} from "@/lib/marketCatalog";
+import { useUserShelf } from "@/store/userShelf";
+import { useProfile, porosityLabel } from "@/lib/hooks/useProfile";
+import { PRODUCTS as SB_PRODUCTS } from "@/lib/products";
+
+export default function ProductDetail() {
+  const { slug } = useLocalSearchParams<{ slug: string }>();
+  const router = useRouter();
+  const product = getMarketProduct(slug as string);
+  const { data: profile } = useProfile();
+  const has = useUserShelf((s) => s.has);
+  const add = useUserShelf((s) => s.add);
+  const remove = useUserShelf((s) => s.remove);
+
+  if (!product) {
+    return (
+      <SafeAreaView className="flex-1 bg-cream">
+        <Text variant="h2" className="p-6">
+          Produit introuvable
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
+  const onShelf = has(product.slug);
+  const { badge, score } = computeMatchBadge(
+    product,
+    profile?.porosity,
+    profile?.hair_type,
+  );
+  const meta = BADGE_META[badge];
+  const sbAlt = product.sb_alternative_slug
+    ? SB_PRODUCTS.find((p) => p.slug === product.sb_alternative_slug)
+    : undefined;
+
+  const ingScore = { A: 5, B: 4, C: 3, D: 2, E: 1 }[product.ingredients_grade];
+  const porosityScore = profile?.porosity
+    ? product.good_for_porosity[profile.porosity]
+    : null;
+
+  return (
+    <View className="flex-1 bg-cream">
+      <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
+        {/* Hero */}
+        <View style={{ position: "relative", height: 320 }}>
+          <View
+            style={{
+              width: "100%",
+              height: "100%",
+              backgroundColor: colors.cream.warm,
+            }}
+          >
+            <Image
+              source={product.photo}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          </View>
+          <SafeAreaView edges={["top"]} className="absolute top-0 left-0 right-0">
+            <Pressable
+              onPress={() => router.back()}
+              className="bg-cream-light rounded-full w-10 h-10 items-center justify-center ml-4 mt-2"
+              hitSlop={8}
+            >
+              <Text variant="body-medium" className="text-bordeaux">
+                ←
+              </Text>
+            </Pressable>
+          </SafeAreaView>
+        </View>
+
+        {/* Header */}
+        <View className="px-5 pt-5">
+          <Text variant="label">{product.brand}</Text>
+          <Text variant="h1" className="mt-1 mb-2">
+            {product.name}
+          </Text>
+          <View className="flex-row gap-2 mb-3 flex-wrap">
+            <Pill variant="soft">
+              <Text variant="caption" className="text-bordeaux">
+                {CATEGORY_LABELS_MARKET[product.category]}
+              </Text>
+            </Pill>
+            {product.size ? (
+              <Pill variant="soft">
+                <Text variant="caption" className="text-bordeaux">
+                  {product.size}
+                </Text>
+              </Pill>
+            ) : null}
+            {product.price_eur ? (
+              <Pill variant="soft">
+                <Text variant="caption" className="text-bordeaux">
+                  ~{product.price_eur.toFixed(2)} €
+                </Text>
+              </Pill>
+            ) : null}
+          </View>
+          <Text variant="body" style={{ lineHeight: 22 }}>
+            {product.short}
+          </Text>
+        </View>
+
+        {/* Badge global */}
+        <View className="px-5 pt-5">
+          <View
+            className="rounded-2xl p-4"
+            style={{ backgroundColor: `${meta.color}1A` }}
+          >
+            <View className="flex-row items-center justify-between">
+              <View className="flex-1">
+                <Text
+                  variant="label"
+                  style={{ color: meta.color, marginBottom: 4 }}
+                >
+                  Match pour ton profil
+                </Text>
+                <Text
+                  variant="h2"
+                  style={{ color: meta.color, fontSize: 22 }}
+                >
+                  {meta.emoji} {meta.label}
+                </Text>
+                {profile ? (
+                  <Text variant="caption" className="mt-1">
+                    {profile.hair_type?.toUpperCase()} ·{" "}
+                    {porosityLabel(profile.porosity)}
+                  </Text>
+                ) : null}
+              </View>
+              <Text
+                variant="display"
+                style={{
+                  color: meta.color,
+                  fontSize: 36,
+                  lineHeight: 40,
+                }}
+              >
+                {score}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Sub-scores */}
+        <View className="px-5 pt-4">
+          <View className="flex-row gap-3 flex-wrap">
+            {porosityScore !== null ? (
+              <SubScore
+                icon="💧"
+                label="Porosité"
+                value={porosityScore}
+                hint={profile?.porosity ?? "?"}
+              />
+            ) : null}
+            <SubScore
+              icon="🌿"
+              label="Ingrédients"
+              value={ingScore}
+              hint={product.ingredients_grade}
+            />
+            <SubScore
+              icon="✨"
+              label="ADN SB"
+              value={product.sb_brand_score}
+            />
+          </View>
+        </View>
+
+        {/* Ingredients key */}
+        <View className="px-5 pt-6">
+          <Text variant="label" className="mb-2">
+            🌱 Ingrédients clés
+          </Text>
+          <View className="flex-row flex-wrap gap-2">
+            {product.ingredients_key.map((ing, i) => (
+              <Pill key={i} variant="ocre">
+                <Text variant="caption" className="text-ocre-deep">
+                  {ing}
+                </Text>
+              </Pill>
+            ))}
+          </View>
+        </View>
+
+        {/* Flags */}
+        {product.flags.length ? (
+          <View className="px-5 pt-6">
+            <Text variant="label" className="mb-2">
+              🏷 Composition
+            </Text>
+            <View className="flex-row flex-wrap gap-2">
+              {product.flags.map((f) => {
+                const m = FLAG_LABELS[f];
+                return (
+                  <View
+                    key={f}
+                    className="rounded-full px-3 py-1"
+                    style={{
+                      backgroundColor: m.positive
+                        ? "#1F7A3D1A"
+                        : "#D32F2F1A",
+                    }}
+                  >
+                    <Text
+                      variant="caption"
+                      style={{
+                        color: m.positive ? "#1F7A3D" : "#B71C1C",
+                        fontSize: 11,
+                      }}
+                    >
+                      {m.positive ? "✓ " : "⚠ "}
+                      {m.label}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        ) : null}
+
+        {/* Usage guide */}
+        <View className="px-5 pt-6">
+          <Text variant="label" className="mb-2">
+            🪮 Comment l'utiliser
+          </Text>
+          <Card variant="outline">
+            <Text variant="body" style={{ lineHeight: 22 }}>
+              {product.usage_guide}
+            </Text>
+          </Card>
+        </View>
+
+        {/* Cross-sell SB Haircare */}
+        {sbAlt && (badge === "ok" || badge === "avoid") ? (
+          <View className="px-5 pt-6">
+            <Card variant="bordeaux">
+              <Text variant="label" style={{ color: "#E8C481" }} className="mb-2">
+                ALTERNATIVE SB HAIRCARE
+              </Text>
+              <Text variant="h3" style={{ color: colors.white }} className="mb-1">
+                Essaie {sbAlt.name}
+              </Text>
+              <Text variant="body" style={{ color: colors.cream.light }} className="mb-3">
+                {sbAlt.short}
+              </Text>
+              <Pressable
+                onPress={() => Linking.openURL(sbAlt.url)}
+                className="bg-cream-light rounded-full py-2 self-start px-4"
+              >
+                <Text variant="body-medium" className="text-bordeaux">
+                  Voir le produit · {sbAlt.price_eur.toFixed(2)} €
+                </Text>
+              </Pressable>
+            </Card>
+          </View>
+        ) : null}
+
+        {/* Source */}
+        {product.source_url ? (
+          <View className="px-5 pt-6">
+            <Pressable onPress={() => Linking.openURL(product.source_url!)}>
+              <Text variant="caption" className="text-bordeaux">
+                Voir sur le site officiel →
+              </Text>
+            </Pressable>
+          </View>
+        ) : null}
+      </ScrollView>
+
+      {/* Sticky CTA */}
+      <View
+        className="absolute bottom-0 left-0 right-0 px-5 pt-3 pb-6 border-t border-cream-warm"
+        style={{ backgroundColor: colors.cream.DEFAULT }}
+      >
+        <Pressable
+          onPress={() =>
+            onShelf ? remove(product.slug) : add(product.slug)
+          }
+          className={`rounded-full py-4 items-center ${
+            onShelf ? "bg-cream-warm" : "bg-bordeaux"
+          }`}
+        >
+          <Text
+            variant="body-medium"
+            style={{
+              color: onShelf ? colors.bordeaux.DEFAULT : colors.white,
+            }}
+          >
+            {onShelf ? "✓ Sur mon étagère — retirer" : "+ Ajouter à mon étagère"}
+          </Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function SubScore({
+  icon,
+  label,
+  value,
+  hint,
+}: {
+  icon: string;
+  label: string;
+  value: number;
+  hint?: string;
+}) {
+  return (
+    <View
+      className="rounded-2xl p-3 border bg-cream-light border-cream-warm"
+      style={{ width: "31%" }}
+    >
+      <Text variant="caption" className="mb-1">
+        {icon} {label}
+      </Text>
+      <View className="flex-row items-center gap-1 mb-1">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <View
+            key={i}
+            className="h-1.5 flex-1 rounded-full"
+            style={{
+              backgroundColor:
+                i < value ? colors.bordeaux.DEFAULT : colors.cream.warm,
+            }}
+          />
+        ))}
+      </View>
+      <Text variant="caption" style={{ fontSize: 10 }}>
+        {value}/5{hint ? ` · ${hint}` : ""}
+      </Text>
+    </View>
+  );
+}
