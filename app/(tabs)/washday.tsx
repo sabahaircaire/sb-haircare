@@ -1,11 +1,18 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   View,
   Pressable,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
+import {
+  ensureNotificationPermission,
+  scheduleWashDayReminder,
+  getReminderStatus,
+} from "@/lib/notifications";
+import { success as hapticSuccess, impact as hapticImpact } from "@/lib/haptics";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
@@ -200,18 +207,7 @@ export default function WashdayScreen() {
           </Pressable>
         </Card>
       ) : upcoming ? (
-        <Card variant="outline" className="mb-6">
-          <Text variant="label" className="mb-2">
-            ⏳ Prochain wash day
-          </Text>
-          <Text variant="h2" className="mb-1">
-            {formatDate(upcoming.date)}
-          </Text>
-          <Text variant="caption">
-            Dans {daysUntil(upcoming.date)} jour
-            {daysUntil(upcoming.date) > 1 ? "s" : ""} — prépare ton étagère
-          </Text>
-        </Card>
+        <UpcomingWashDayCard date={upcoming.date} />
       ) : null}
 
       {/* Flows rapides */}
@@ -412,6 +408,86 @@ export default function WashdayScreen() {
         </View>
       </ScrollView>
     </ScreenContainer>
+  );
+}
+
+function UpcomingWashDayCard({ date }: { date: string }) {
+  const [reminderState, setReminderState] = useState<
+    "idle" | "scheduled" | "denied" | "unsupported"
+  >("idle");
+
+  useEffect(() => {
+    (async () => {
+      const s = await getReminderStatus();
+      if (s === "denied") setReminderState("denied");
+      if (s === "unsupported") setReminderState("unsupported");
+    })();
+  }, []);
+
+  const onSetReminder = async () => {
+    hapticImpact("medium");
+    const ok = await ensureNotificationPermission();
+    if (!ok) {
+      setReminderState("denied");
+      Alert.alert(
+        "Notifications désactivées",
+        "Active les notifications pour SB Haircare dans les réglages de ton téléphone pour recevoir tes rappels wash day.",
+      );
+      return;
+    }
+    await scheduleWashDayReminder(date);
+    setReminderState("scheduled");
+    await hapticSuccess();
+  };
+
+  return (
+    <Card variant="outline" className="mb-6">
+      <Text variant="label" className="mb-2">
+        ⏳ Prochain wash day
+      </Text>
+      <Text variant="h2" className="mb-1">
+        {formatDate(date)}
+      </Text>
+      <Text variant="caption" className="mb-3">
+        Dans {daysUntil(date)} jour{daysUntil(date) > 1 ? "s" : ""} — prépare
+        ton étagère
+      </Text>
+
+      <Pressable
+        onPress={reminderState === "scheduled" ? undefined : onSetReminder}
+        disabled={
+          reminderState === "scheduled" || reminderState === "unsupported"
+        }
+        style={({ pressed }) => [
+          {
+            backgroundColor:
+              reminderState === "scheduled" ? "#EFE3CF" : "#4A1015",
+            borderRadius: 999,
+            paddingVertical: 12,
+            alignItems: "center",
+            opacity:
+              reminderState === "unsupported" ? 0.4 : pressed ? 0.9 : 1,
+            transform: pressed ? [{ scale: 0.98 }] : [{ scale: 1 }],
+          },
+        ]}
+      >
+        <Text
+          variant="body-medium"
+          style={{
+            color:
+              reminderState === "scheduled" ? "#4A1015" : "#FFFFFF",
+          }}
+        >
+          {reminderState === "scheduled"
+            ? "✓ Rappel activé"
+            : reminderState === "denied"
+              ? "🔔 Activer dans les réglages"
+              : reminderState === "unsupported"
+                ? "🔔 Rappel indisponible sur le web"
+                : "🔔 Me le rappeler"}
+        </Text>
+      </Pressable>
+    </Card>
   );
 }
 

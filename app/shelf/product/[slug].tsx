@@ -23,6 +23,9 @@ import {
 import { useUserShelf } from "@/store/userShelf";
 import { useProfile, porosityLabel } from "@/lib/hooks/useProfile";
 import { PRODUCTS as SB_PRODUCTS } from "@/lib/products";
+import { success as hapticSuccess, impact as hapticImpact } from "@/lib/haptics";
+import { useRef } from "react";
+import { Animated } from "react-native";
 
 export default function ProductDetail() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
@@ -275,28 +278,80 @@ export default function ProductDetail() {
       </ScrollView>
 
       {/* Sticky CTA */}
-      <View
-        className="absolute bottom-0 left-0 right-0 px-5 pt-3 pb-6 border-t border-cream-warm"
-        style={{ backgroundColor: colors.cream.DEFAULT }}
-      >
-        <Pressable
-          onPress={() =>
-            onShelf ? remove(product.slug) : add(product.slug)
+      <ShelfCTA
+        onShelf={onShelf}
+        onToggle={async () => {
+          if (onShelf) {
+            await hapticImpact("light");
+            remove(product.slug);
+          } else {
+            await hapticSuccess();
+            add(product.slug);
           }
-          className={`rounded-full py-4 items-center ${
-            onShelf ? "bg-cream-warm" : "bg-bordeaux"
-          }`}
+        }}
+      />
+    </View>
+  );
+}
+
+function ShelfCTA({
+  onShelf,
+  onToggle,
+}: {
+  onShelf: boolean;
+  onToggle: () => void;
+}) {
+  const scale = useRef(new Animated.Value(1)).current;
+  const onPressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.96,
+      useNativeDriver: true,
+      speed: 50,
+      bounciness: 0,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      useNativeDriver: true,
+      speed: 50,
+      bounciness: 10,
+    }).start();
+  };
+  return (
+    <View
+      className="absolute bottom-0 left-0 right-0 px-5 pt-3 pb-6 border-t border-cream-warm"
+      style={{ backgroundColor: colors.cream.DEFAULT }}
+    >
+      <Animated.View style={{ transform: [{ scale }] }}>
+        <Pressable
+          onPress={onToggle}
+          onPressIn={onPressIn}
+          onPressOut={onPressOut}
+          style={({ pressed }) => ({
+            backgroundColor: onShelf
+              ? "#EFE3CF"
+              : pressed
+                ? "#3A0B10"
+                : "#4A1015",
+            borderRadius: 999,
+            paddingVertical: 16,
+            alignItems: "center",
+          })}
         >
           <Text
             variant="body-medium"
             style={{
               color: onShelf ? colors.bordeaux.DEFAULT : colors.white,
+              fontSize: 16,
             }}
           >
-            {onShelf ? "✓ Sur mon étagère — retirer" : "+ Ajouter à mon étagère"}
+            {onShelf
+              ? "✓ Sur mon étagère — retirer"
+              : "+ Ajouter à mon étagère"}
           </Text>
         </Pressable>
-      </View>
+      </Animated.View>
     </View>
   );
 }
