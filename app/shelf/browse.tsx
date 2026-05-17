@@ -7,6 +7,7 @@ import {
   TextInput,
 } from "react-native";
 import { useRouter } from "expo-router";
+import { PressableHaptic } from "@/components/PressableHaptic";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Pill } from "@/components/Pill";
@@ -212,8 +213,9 @@ export default function BrowseShelf() {
             const meta = BADGE_META[badge];
             const onShelf = items.some((i) => i.product_slug === p.slug);
             return (
-              <Pressable
+              <PressableHaptic
                 key={p.slug}
+                hapticStyle="light"
                 onPress={() => router.push(`/shelf/product/${p.slug}`)}
                 className="bg-cream-light rounded-2xl overflow-hidden border border-cream-warm"
                 style={{ width: "48%" }}
@@ -288,7 +290,7 @@ export default function BrowseShelf() {
                     {CATEGORY_LABELS_MARKET[p.category]}
                   </Text>
                 </View>
-              </Pressable>
+              </PressableHaptic>
             );
           })}
         </View>

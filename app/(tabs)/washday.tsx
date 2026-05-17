@@ -13,6 +13,7 @@ import {
   getReminderStatus,
 } from "@/lib/notifications";
 import { success as hapticSuccess, impact as hapticImpact } from "@/lib/haptics";
+import { PressableHaptic } from "@/components/PressableHaptic";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
@@ -119,8 +120,9 @@ export default function WashdayScreen() {
             const sched = scheduled.find((s) => s.date === iso);
             const active = !!sched;
             return (
-              <Pressable
+              <PressableHaptic
                 key={iso}
+                hapticStyle="light"
                 onPress={() => onTapDay(iso)}
                 className={`rounded-2xl border ${
                   active
@@ -173,7 +175,7 @@ export default function WashdayScreen() {
                     />
                   ) : null}
                 </View>
-              </Pressable>
+              </PressableHaptic>
             );
           })}
         </View>
@@ -191,7 +193,8 @@ export default function WashdayScreen() {
           <Text variant="body" className="mb-4" style={{ color: colors.cream.light }}>
             Lance ton flow pour suivre chaque étape avec minuteur.
           </Text>
-          <Pressable
+          <PressableHaptic
+            hapticStyle="medium"
             onPress={() => {
               const flow =
                 flows.find((f) => f.code === todaySched.flow_code) ??
@@ -204,7 +207,7 @@ export default function WashdayScreen() {
             <Text variant="body-medium" className="text-bordeaux">
               ▶ Lancer le flow
             </Text>
-          </Pressable>
+          </PressableHaptic>
         </Card>
       ) : upcoming ? (
         <UpcomingWashDayCard date={upcoming.date} />
@@ -219,8 +222,9 @@ export default function WashdayScreen() {
       </Text>
       <View className="flex-row flex-wrap gap-3 mb-8">
         {(flows ?? []).map((flow) => (
-          <Pressable
+          <PressableHaptic
             key={flow.id}
+            hapticStyle="medium"
             onPress={() => launch(flow)}
             className="bg-cream-light rounded-2xl overflow-hidden border border-cream-warm"
             style={{ width: "48%" }}
@@ -242,7 +246,7 @@ export default function WashdayScreen() {
                 {flow.total_duration_min} min
               </Text>
             </View>
-          </Pressable>
+          </PressableHaptic>
         ))}
       </View>
 
@@ -328,8 +332,9 @@ export default function WashdayScreen() {
             );
             const meta = BADGE_META[badge];
             return (
-              <Pressable
+              <PressableHaptic
                 key={`user-${p.slug}`}
+                hapticStyle="light"
                 onPress={() => router.push(`/shelf/product/${p.slug}`)}
                 className="bg-cream-light rounded-2xl border border-cream-warm overflow-hidden"
                 style={{ width: 130 }}
@@ -388,12 +393,13 @@ export default function WashdayScreen() {
                     {p.name}
                   </Text>
                 </View>
-              </Pressable>
+              </PressableHaptic>
             );
           })}
 
           {/* Add CTA */}
-          <Pressable
+          <PressableHaptic
+            hapticStyle="medium"
             onPress={() => router.push("/shelf/browse")}
             className="rounded-2xl border-2 border-dashed border-cream-warm items-center justify-center"
             style={{ width: 130, minHeight: 168 }}
@@ -404,7 +410,7 @@ export default function WashdayScreen() {
             <Text variant="caption" className="text-ink-muted text-center px-2">
               Ajouter un produit
             </Text>
-          </Pressable>
+          </PressableHaptic>
         </View>
       </ScrollView>
     </ScreenContainer>
