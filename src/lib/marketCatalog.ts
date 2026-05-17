@@ -104,250 +104,6 @@ const cleanFlags: ProductFlags = {
 };
 
 export const MARKET_PRODUCTS: MarketProduct[] = [
-  // ─────────────────────────────────────────────────────────────────────
-  // CANTU — marque US karité, distribution massive en GMS et afro shops FR
-  // ─────────────────────────────────────────────────────────────────────
-  {
-    slug: "cantu-curl-activator-cream",
-    brand: "Cantu",
-    name: "Shea Butter Curl Activator Cream",
-    category: "creme",
-    image_url: "",
-    product_url: "https://cantubeauty.com/products/curl-activator-cream",
-    inci:
-      "Water, Behentrimonium Methosulfate, Cetearyl Alcohol, Glycerin, " +
-      "Butyrospermum Parkii (Shea) Butter, Glycine Soja (Soybean) Oil, " +
-      "Olea Europaea (Olive) Fruit Oil, Tocopheryl Acetate, Phenoxyethanol, " +
-      "Citric Acid, Mentha Piperita (Peppermint) Oil, Fragrance.",
-    price_eur: 9.99,
-    size_ml: 355,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true },
-    usage_guide:
-      "À appliquer sur cheveux mouillés essorés, mèche par mèche, pour activer et définir la boucle. Sécher à l'air libre ou au diffuseur.",
-    sb_alternative_slug: "chantilly",
-  },
-  {
-    slug: "cantu-shea-butter-leave-in",
-    brand: "Cantu",
-    name: "Shea Butter Leave-In Conditioning Repair Cream",
-    category: "leave-in",
-    image_url: "",
-    product_url:
-      "https://cantubeauty.com/products/shea-butter-leave-in-conditioning-repair-cream",
-    inci:
-      "Water, Cetearyl Alcohol, Behentrimonium Methosulfate, Glycerin, " +
-      "Butyrospermum Parkii (Shea) Butter, Ricinus Communis (Castor) Seed Oil, " +
-      "Persea Gratissima (Avocado) Oil, Argania Spinosa Kernel Oil, " +
-      "Cocos Nucifera (Coconut) Oil, Olea Europaea (Olive) Fruit Oil, " +
-      "Tocopheryl Acetate, Hydrolyzed Soy Protein, Hydrolyzed Wheat Protein, " +
-      "Honey, Mentha Piperita (Peppermint) Oil, Phenoxyethanol, Fragrance.",
-    price_eur: 9.5,
-    size_ml: 340,
-    good_for_porosity: 4,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Sur cheveux propres et humides, masser une noisette racines aux pointes pour démêler, hydrater et préparer au coiffage. Ne pas rincer.",
-    sb_alternative_slug: "chantilly",
-  },
-  {
-    slug: "cantu-coconut-curling-cream",
-    brand: "Cantu",
-    name: "Coconut Curling Cream",
-    category: "creme",
-    image_url: "",
-    product_url: "https://cantubeauty.com/products/coconut-curling-cream",
-    inci:
-      "Water, Stearyl Alcohol, Behentrimonium Methosulfate, Cetyl Alcohol, " +
-      "Glycerin, Cocos Nucifera (Coconut) Oil, Butyrospermum Parkii (Shea) Butter, " +
-      "Hydrolyzed Soy Protein, Hydrolyzed Wheat Protein, Honey, " +
-      "Olea Europaea (Olive) Fruit Oil, Tocopheryl Acetate, " +
-      "Mentha Piperita (Peppermint) Oil, Phenoxyethanol, Fragrance.",
-    price_eur: 9.5,
-    size_ml: 340,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Sur cheveux mouillés sortie de douche, prélever une noisette et travailler mèche par mèche pour définir les boucles et limiter les frisottis.",
-    sb_alternative_slug: "chantilly",
-  },
-  {
-    slug: "cantu-sulfate-free-shampoo",
-    brand: "Cantu",
-    name: "Sulfate-Free Cleansing Cream Shampoo",
-    category: "shampoing",
-    image_url: "",
-    product_url:
-      "https://cantubeauty.com/products/sulfate-free-cleansing-cream-shampoo",
-    inci:
-      "Water, Cocamidopropyl Betaine, Glycerin, Sodium C14-16 Olefin Sulfonate, " +
-      "Cocamide MEA, Butyrospermum Parkii (Shea) Butter, Cetyl Alcohol, " +
-      "Citric Acid, Tocopheryl Acetate, Hydrolyzed Soy Protein, " +
-      "Hydrolyzed Wheat Protein, Honey, Sodium Chloride, Phenoxyethanol, Fragrance.",
-    price_eur: 9.5,
-    size_ml: 400,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Émulsionner une dose dans les longueurs mouillées, masser le cuir chevelu en douceur puis rincer. Renouveler si besoin sur cheveux très sales.",
-    sb_alternative_slug: "masque-ayurvedique",
-  },
-  {
-    slug: "cantu-edge-stay-gel",
-    brand: "Cantu",
-    name: "Extra Hold Edge Stay Gel",
-    category: "edge",
-    image_url: "",
-    product_url: "https://cantubeauty.com/products/extra-hold-edge-stay-gel",
-    inci:
-      "Water, Polyquaternium-37, VP/VA Copolymer, Glycerin, PEG-40 Hydrogenated Castor Oil, " +
-      "Butyrospermum Parkii (Shea) Butter, Polyquaternium-11, Phenoxyethanol, " +
-      "Disodium EDTA, Citric Acid, Fragrance.",
-    price_eur: 7.5,
-    size_ml: 64,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "C",
-    flags: { ...cleanFlags, contains_fragrance: true },
-    usage_guide:
-      "Avec le doigt ou une brosse fine, déposer sur les baby hairs et lisser pour fixer les contours. À utiliser avec parcimonie pour éviter l'effet carton.",
-    sb_alternative_slug: "chantilly",
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // SHEA MOISTURE
-  // ─────────────────────────────────────────────────────────────────────
-  {
-    slug: "sheamoisture-jbco-leave-in",
-    brand: "SheaMoisture",
-    name: "Jamaican Black Castor Oil Strengthen & Restore Leave-In Conditioner",
-    category: "leave-in",
-    image_url: "",
-    product_url:
-      "https://www.sheamoisture.com/jamaican-black-castor-oil-strengthen-restore-leave-in-conditioner.html",
-    inci:
-      "Water, Behentrimonium Methosulfate, Cetearyl Alcohol, Glycerin, " +
-      "Ricinus Communis (Castor) Seed Oil, Mangifera Indica (Mango) Seed Butter, " +
-      "Butyrospermum Parkii (Shea) Butter, Persea Gratissima (Avocado) Oil, " +
-      "Apple Cider Vinegar, Hydrolyzed Vegetable Protein PG-Propyl Silanetriol, " +
-      "Panthenol, Tocopherol, Phenoxyethanol, Fragrance (Parfum).",
-    price_eur: 13.9,
-    size_ml: 325,
-    good_for_porosity: 4,
-    good_for_type: 5,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Sur cheveux humides, distribuer généreusement des racines aux pointes pour démêler, fortifier et nourrir avant coiffage. Ne pas rincer.",
-    sb_alternative_slug: "chantilly",
-  },
-  {
-    slug: "sheamoisture-manuka-honey-masque",
-    brand: "SheaMoisture",
-    name: "Manuka Honey & Mafura Oil Intensive Hydration Hair Masque",
-    category: "masque",
-    image_url: "",
-    product_url:
-      "https://www.sheamoisture.com/manuka-honey-mafura-oil-intensive-hydration-hair-masque.html",
-    inci:
-      "Water, Behentrimonium Methosulfate, Glycerin, Cetearyl Alcohol, " +
-      "Butyrospermum Parkii (Shea) Butter, Honey, Mel (Manuka Honey) Extract, " +
-      "Trichilia Emetica Seed (Mafura) Butter, Adansonia Digitata (Baobab) Seed Oil, " +
-      "Apple Cider Vinegar, Hydrolyzed Vegetable Protein, Panthenol, " +
-      "Phenoxyethanol, Tocopherol, Fragrance (Parfum).",
-    price_eur: 14.9,
-    size_ml: 354,
-    good_for_porosity: 4,
-    good_for_type: 5,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Sur cheveux propres essorés, appliquer généreusement des pointes aux racines, laisser poser 15-30 min (avec chaleur idéalement) puis rincer abondamment.",
-    sb_alternative_slug: "masque-longueur",
-  },
-  {
-    slug: "sheamoisture-coconut-hibiscus-smoothie",
-    brand: "SheaMoisture",
-    name: "Coconut & Hibiscus Curl Enhancing Smoothie",
-    category: "creme",
-    image_url: "",
-    product_url:
-      "https://www.sheamoisture.com/coconut-hibiscus-curl-enhancing-smoothie.html",
-    inci:
-      "Water, Cetearyl Alcohol, Cocos Nucifera (Coconut) Oil, Behentrimonium Methosulfate, " +
-      "Butyrospermum Parkii (Shea) Butter, Glycerin, Theobroma Cacao (Cocoa) Seed Butter, " +
-      "Argania Spinosa Kernel Oil, Persea Gratissima (Avocado) Oil, " +
-      "Hibiscus Sabdariffa Flower Extract, Daucus Carota Sativa (Carrot) Seed Oil, " +
-      "Hydrolyzed Silk, Phenoxyethanol, Tocopherol, Fragrance (Parfum).",
-    price_eur: 13.9,
-    size_ml: 326,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Sur cheveux humides, prélever une noisette et travailler mèche par mèche pour définir et hydrater. Idéal pour les twist-outs et bantu knots.",
-    sb_alternative_slug: "chantilly",
-  },
-  {
-    slug: "sheamoisture-raw-shea-shampoo",
-    brand: "SheaMoisture",
-    name: "Raw Shea Butter Moisture Retention Shampoo",
-    category: "shampoing",
-    image_url: "",
-    product_url:
-      "https://www.sheamoisture.com/raw-shea-butter-moisture-retention-shampoo.html",
-    inci:
-      "Water, Cocamidopropyl Betaine, Sodium Lauroyl Methyl Isethionate, " +
-      "Decyl Glucoside, Cocamide MIPA, Butyrospermum Parkii (Shea) Butter, " +
-      "Argania Spinosa Kernel Oil, Glycerin, Avena Sativa (Oat) Kernel Extract, " +
-      "Sea Kelp Extract, Tocopherol, Phenoxyethanol, Fragrance (Parfum).",
-    price_eur: 12.9,
-    size_ml: 384,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "A",
-    flags: { ...cleanFlags, contains_fragrance: true },
-    usage_guide:
-      "Lavage doux : émulsionner dans les longueurs mouillées et masser le cuir chevelu en douceur avant rinçage. Sans sulfate, respecte la barrière hydrolipidique.",
-    sb_alternative_slug: "masque-ayurvedique",
-  },
-  {
-    slug: "sheamoisture-coconut-cowash",
-    brand: "SheaMoisture",
-    name: "100% Virgin Coconut Oil Daily Hydration Co-Wash",
-    category: "co-wash",
-    image_url: "",
-    product_url:
-      "https://www.sheamoisture.com/100-virgin-coconut-oil-daily-hydration-co-wash.html",
-    inci:
-      "Water, Cetyl Alcohol, Behentrimonium Methosulfate, " +
-      "Cocos Nucifera (Coconut) Oil, Glycerin, Cetyl Esters, Stearyl Alcohol, " +
-      "Hydrolyzed Quinoa, Mauritia Flexuosa Fruit Oil, " +
-      "Mangifera Indica (Mango) Seed Butter, Acacia Senegal Gum, " +
-      "Phenoxyethanol, Tocopherol, Fragrance (Parfum).",
-    price_eur: 13.9,
-    size_ml: 354,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "A",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Co-wash entre deux shampoings : émulsionner sur cheveux mouillés, masser racines et longueurs, laisser poser 2-3 min puis rincer abondamment.",
-    sb_alternative_slug: "masque-longueur",
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // AS I AM
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "asiam-coconut-cowash",
     brand: "As I Am",
@@ -442,10 +198,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Masque hydratant intensif : appliquer généreusement sur cheveux propres essorés, peigner pour bien répartir, laisser poser 15-30 min sous bonnet chauffant puis rincer.",
     sb_alternative_slug: "masque-longueur",
   },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // AUNT JACKIE'S
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "auntjackies-dont-shrink",
     brand: "Aunt Jackie's",
@@ -515,10 +267,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Custard léger entre crème et gel : appliquer sur cheveux mouillés pour définir les boucles sans alourdir. Compatible avec la méthode LCO.",
     sb_alternative_slug: "chantilly",
   },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // MIELLE ORGANICS
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "mielle-rosemary-mint-oil",
     brand: "Mielle Organics",
@@ -588,10 +336,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Après shampoing, appliquer généreusement sur cheveux essorés, laisser poser 15-20 min sous bonnet (chaleur conseillée) et rincer. 1×/semaine.",
     sb_alternative_slug: "masque-longueur",
   },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // CAMILLE ROSE NATURALS
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "camillerose-curl-maker",
     brand: "Camille Rose",
@@ -662,128 +406,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Masque deep conditioning aux algues : appliquer sur cheveux propres, laisser poser 20 min sous bonnet chauffant puis rincer abondamment.",
     sb_alternative_slug: "masque-ayurvedique",
   },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // CAROL'S DAUGHTER
-  // ─────────────────────────────────────────────────────────────────────
-  {
-    slug: "carolsdaughter-black-vanilla-smoothie",
-    brand: "Carol's Daughter",
-    name: "Black Vanilla Moisture & Shine Hair Smoothie",
-    category: "leave-in",
-    image_url: "",
-    product_url:
-      "https://www.carolsdaughter.com/black-vanilla-hair-smoothie/CD019.html",
-    inci:
-      "Water, Glycerin, Cetearyl Alcohol, Behentrimonium Methosulfate, " +
-      "Persea Gratissima (Avocado) Oil, Butyrospermum Parkii (Shea) Butter, " +
-      "Cocos Nucifera (Coconut) Oil, Olea Europaea (Olive) Fruit Oil, " +
-      "Vanilla Planifolia Fruit Extract, Aloe Barbadensis Leaf Juice, " +
-      "Tocopheryl Acetate, Phenoxyethanol, Fragrance (Parfum).",
-    price_eur: 13.9,
-    size_ml: 226,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true },
-    usage_guide:
-      "Sur cheveux humides ou secs, prélever une noisette et masser dans les longueurs pour rafraîchir les boucles entre deux lavages. Senteur vanille tenace.",
-    sb_alternative_slug: "chantilly",
-  },
-  {
-    slug: "carolsdaughter-goddess-strength-oil",
-    brand: "Carol's Daughter",
-    name: "Goddess Strength Divine Strength Hair Oil",
-    category: "huile",
-    image_url: "",
-    product_url:
-      "https://www.carolsdaughter.com/goddess-strength-hair-oil/CD150.html",
-    inci:
-      "Cyclopentasiloxane, Dimethicone, Helianthus Annuus (Sunflower) Seed Oil, " +
-      "Olea Europaea (Olive) Fruit Oil, Cocos Nucifera (Coconut) Oil, " +
-      "Ricinus Communis (Castor) Seed Oil, Tocopheryl Acetate, " +
-      "Phenyl Trimethicone, Fragrance (Parfum), Limonene, Linalool.",
-    price_eur: 14.9,
-    size_ml: 119,
-    good_for_porosity: 1,
-    good_for_type: 3,
-    ingredients_grade: "D",
-    flags: { ...cleanFlags, contains_silicones: true, contains_fragrance: true },
-    usage_guide:
-      "Sérum sec à base de silicones : déposer quelques gouttes sur cheveux humides ou secs pour lisser, faire briller et limiter les frisottis. Nécessite un shampoing clarifiant.",
-    sb_alternative_slug: "huile-raiponce",
-  },
-  {
-    slug: "carolsdaughter-monoi-mask",
-    brand: "Carol's Daughter",
-    name: "Monoi Repairing Conditioning Mask",
-    category: "masque",
-    image_url: "",
-    product_url:
-      "https://www.carolsdaughter.com/monoi-repairing-conditioning-mask/CD068.html",
-    inci:
-      "Water, Behentrimonium Methosulfate, Glycerin, Cetearyl Alcohol, " +
-      "Cocos Nucifera (Coconut) Oil (Monoï de Tahiti), Tahitian Gardenia Flower Extract, " +
-      "Butyrospermum Parkii (Shea) Butter, Hydrolyzed Keratin, " +
-      "Cetrimonium Chloride, Phenoxyethanol, Fragrance (Parfum).",
-    price_eur: 14.9,
-    size_ml: 340,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true, contains_protein: true },
-    usage_guide:
-      "Masque réparateur post-lessivage : appliquer sur cheveux essorés, laisser poser 5-10 min puis rincer. Idéal après coloration ou chaleur intense.",
-    sb_alternative_slug: "masque-longueur",
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // JAMAICAN MANGO & LIME
-  // ─────────────────────────────────────────────────────────────────────
-  {
-    slug: "jamaicanmangolime-jbco",
-    brand: "Jamaican Mango & Lime",
-    name: "Jamaican Black Castor Oil — Original",
-    category: "huile",
-    image_url: "",
-    product_url:
-      "https://www.jamaicanmangoandlime.com/jamaican-black-castor-oil",
-    inci:
-      "Ricinus Communis (Castor) Seed Oil (Jamaican Black Castor Oil), Parfum.",
-    price_eur: 8.9,
-    size_ml: 118,
-    good_for_porosity: 5,
-    good_for_type: 5,
-    ingredients_grade: "A",
-    flags: { ...cleanFlags, contains_fragrance: true },
-    usage_guide:
-      "Huile de ricin noire jamaïcaine, épaisse et nutritive : à appliquer en bain d'huile (1-2 h avant shampoing) ou en sealant sur pointes après hydratation. Très occlusive.",
-    sb_alternative_slug: "huile-raiponce",
-  },
-  {
-    slug: "jamaicanmangolime-no-more-itch-spray",
-    brand: "Jamaican Mango & Lime",
-    name: "No More Itch Gro Spray Treatment",
-    category: "spray",
-    image_url: "",
-    product_url: "https://www.jamaicanmangoandlime.com/no-more-itch-gro-spray",
-    inci:
-      "Water, Alcohol Denat., Glycerin, Allantoin, Tea Tree Oil, " +
-      "Camphor, Menthol, Aloe Barbadensis Leaf Extract, Fragrance.",
-    price_eur: 8.5,
-    size_ml: 236,
-    good_for_porosity: 2,
-    good_for_type: 3,
-    ingredients_grade: "D",
-    flags: { ...cleanFlags, contains_drying_alcohols: true, contains_fragrance: true },
-    usage_guide:
-      "Spray cuir chevelu sous tresses ou perruques : vaporiser directement sur les zones qui démangent. Contient de l'alcool — éviter usage prolongé sur cheveux secs.",
-    sb_alternative_slug: "huile-raiponce",
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // HASK
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "hask-argan-deep-conditioner",
     brand: "Hask",
@@ -832,66 +454,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Sachet dose unique parfum coco-monoï : appliquer sur cheveux essorés, laisser poser 5-7 min, rincer. Glisse au démêlage garantie mais charge en silicones.",
     sb_alternative_slug: "masque-longueur",
   },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // ECO STYLER
-  // ─────────────────────────────────────────────────────────────────────
-  {
-    slug: "ecostyler-olive-oil-gel",
-    brand: "Eco Styler",
-    name: "Olive Oil Styling Gel",
-    category: "gel",
-    image_url: "",
-    product_url: "https://www.ecostyler.com/products/olive-oil-styling-gel",
-    inci:
-      "Water, Olea Europaea (Olive) Fruit Oil, Triethanolamine, " +
-      "Tetrahydroxypropyl Ethylenediamine, Carbomer, Glycerin, " +
-      "Tetrasodium EDTA, Polysorbate 20, DMDM Hydantoin, " +
-      "Iodopropynyl Butylcarbamate, Yellow 5 (CI 19140), Yellow 6 (CI 15985), Fragrance.",
-    price_eur: 7.5,
-    size_ml: 473,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "D",
-    flags: {
-      ...cleanFlags,
-      contains_fragrance: true,
-      contains_formaldehyde_releasers: true,
-    },
-    usage_guide:
-      "Gel fixant fort pour wash & go ou pose-edges : appliquer sur cheveux mouillés, étirer la mèche. Contient DMDM Hydantoin (libérateur de formaldéhyde) — éviter usage quotidien.",
-    sb_alternative_slug: "chantilly",
-  },
-  {
-    slug: "ecostyler-argan-oil-gel",
-    brand: "Eco Styler",
-    name: "Argan Oil Styling Gel",
-    category: "gel",
-    image_url: "",
-    product_url: "https://www.ecostyler.com/products/argan-oil-styling-gel",
-    inci:
-      "Water, Argania Spinosa Kernel Oil, Triethanolamine, " +
-      "Tetrahydroxypropyl Ethylenediamine, Carbomer, Glycerin, " +
-      "Tetrasodium EDTA, Polysorbate 20, DMDM Hydantoin, " +
-      "Iodopropynyl Butylcarbamate, Fragrance.",
-    price_eur: 8.5,
-    size_ml: 473,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "D",
-    flags: {
-      ...cleanFlags,
-      contains_fragrance: true,
-      contains_formaldehyde_releasers: true,
-    },
-    usage_guide:
-      "Variante argan, même base que le gel olive : pose pour twist-outs, braid-outs et wash & go. Précaution sur ingrédient DMDM Hydantoin.",
-    sb_alternative_slug: "chantilly",
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // DESIGN ESSENTIALS
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "designessentials-curl-enhancing-mousse",
     brand: "Design Essentials",
@@ -939,10 +501,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Lotion hydratante quotidienne, finition lisse : déposer une noisette sur cheveux humides ou secs pour rafraîchir et discipliner. Contient des silicones — clarifier régulièrement.",
     sb_alternative_slug: "chantilly",
   },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // TGIN
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "tgin-honey-miracle-mask",
     brand: "TGIN",
@@ -1010,10 +568,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Soin profond aux trois beurres végétaux : appliquer après shampoing, peigner, laisser poser 10-15 min puis rincer. Excellente nutrition pour cheveux secs et denses.",
     sb_alternative_slug: "masque-longueur",
   },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // THE MANE CHOICE
-  // ─────────────────────────────────────────────────────────────────────
   {
     slug: "themanechoice-easy-on-curls",
     brand: "The Mane Choice",
@@ -1036,56 +590,6 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
     usage_guide:
       "Soin démêlant intense : sur cheveux humides après shampoing, peigner section par section avec le produit en place puis rincer. Limite la casse mécanique.",
     sb_alternative_slug: "masque-longueur",
-  },
-
-  // ─────────────────────────────────────────────────────────────────────
-  // MARQUES FRANÇAISES
-  // ─────────────────────────────────────────────────────────────────────
-  {
-    slug: "activlong-actiforce-serum",
-    brand: "Activlong",
-    name: "Actiforce Sérum Anti-Chute Croissance",
-    category: "huile",
-    image_url: "",
-    product_url:
-      "https://www.activilong.com/fr/actiforce/serum-anti-chute-croissance",
-    inci:
-      "Cyclopentasiloxane, Cyclohexasiloxane, Dimethiconol, " +
-      "Ricinus Communis (Castor) Seed Oil, Argania Spinosa Kernel Oil, " +
-      "Persea Gratissima (Avocado) Oil, Sesamum Indicum (Sesame) Seed Oil, " +
-      "Mentha Piperita (Peppermint) Oil, Rosmarinus Officinalis Leaf Oil, " +
-      "Tocopherol, Parfum (Fragrance).",
-    price_eur: 9.9,
-    size_ml: 150,
-    good_for_porosity: 2,
-    good_for_type: 4,
-    ingredients_grade: "C",
-    flags: { ...cleanFlags, contains_silicones: true, contains_fragrance: true },
-    usage_guide:
-      "Sérum cuir chevelu : déposer quelques gouttes sur les racines, masser pendant 2-3 min. Mélange silicones + huiles végétales — clarifier 1×/2 semaines.",
-    sb_alternative_slug: "huile-raiponce",
-  },
-  {
-    slug: "purepousse-serum-fortifiant",
-    brand: "Pure Pousse",
-    name: "Sérum Fortifiant Cuir Chevelu",
-    category: "huile",
-    image_url: "",
-    product_url: "https://purepousse.com/produits/serum-fortifiant",
-    inci:
-      "Ricinus Communis (Castor) Seed Oil, Argania Spinosa Kernel Oil, " +
-      "Cocos Nucifera (Coconut) Oil, Persea Gratissima (Avocado) Oil, " +
-      "Mentha Piperita (Peppermint) Oil, Rosmarinus Officinalis Leaf Oil, " +
-      "Lavandula Angustifolia Oil, Cedrus Atlantica Bark Oil, Tocopherol.",
-    price_eur: 29.0,
-    size_ml: 60,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "A",
-    flags: { ...cleanFlags },
-    usage_guide:
-      "Sérum 100% huiles végétales et essentielles : 5-8 gouttes sur le cuir chevelu, masser 5 min pour stimuler la pousse. 2-3×/semaine. ⚠️ INCI à revérifier sur la page produit officielle.",
-    sb_alternative_slug: "huile-raiponce",
   },
   {
     slug: "lessecretsdeloly-sublime-curl",
@@ -1134,29 +638,7 @@ export const MARKET_PRODUCTS: MarketProduct[] = [
       "Masque nutritif coco-karité : appliquer sur cheveux essorés après shampoing, laisser poser 15-30 min sous bonnet chauffant puis rincer. 1×/semaine.",
     sb_alternative_slug: "masque-longueur",
   },
-  {
-    slug: "mariebeauty-creme-karite",
-    brand: "Marie Beauty",
-    name: "Crème Coiffante Karité & Ricin",
-    category: "creme",
-    image_url: "",
-    product_url: "https://www.mariebeauty.fr/produits/creme-coiffante-karite-ricin",
-    inci:
-      "Aqua (Water), Glycerin, Cetearyl Alcohol, " +
-      "Butyrospermum Parkii (Shea) Butter, Ricinus Communis (Castor) Seed Oil, " +
-      "Behentrimonium Methosulfate, Cocos Nucifera (Coconut) Oil, " +
-      "Olea Europaea (Olive) Fruit Oil, Aloe Barbadensis Leaf Juice, " +
-      "Tocopherol, Phenoxyethanol, Parfum (Fragrance).",
-    price_eur: 12.9,
-    size_ml: 250,
-    good_for_porosity: 3,
-    good_for_type: 4,
-    ingredients_grade: "B",
-    flags: { ...cleanFlags, contains_fragrance: true },
-    usage_guide:
-      "Crème coiffante hydratante : appliquer mèche par mèche sur cheveux humides pour définir et nourrir. ⚠️ INCI à revérifier sur l'emballage (gamme française moins documentée).",
-    sb_alternative_slug: "chantilly",
-  },
+
 ];
 
 // ─────────────────────────────────────────────────────────────────────────
