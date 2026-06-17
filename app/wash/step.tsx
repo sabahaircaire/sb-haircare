@@ -1,11 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import { View, Pressable } from "react-native";
+import { View, Pressable, Animated } from "react-native";
 import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
+import { ConfettiBurst } from "@/components/ConfettiBurst";
 import { useWashFlow } from "@/store/washFlow";
+import { notifyStepComplete, primeStepAudio } from "@/lib/stepFeedback";
+import { colors } from "@/theme/colors";
 
 function formatMMSS(totalSeconds: number) {
   const m = Math.max(0, Math.floor(totalSeconds / 60));
@@ -35,6 +38,13 @@ export default function WashStep() {
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Célébration de fin de minuteur (vibration + son + visuel festif)
+  const [celebrating, setCelebrating] = useState(false);
+  const flashOpacity = useRef(new Animated.Value(0)).current;
+  const checkScale = useRef(new Animated.Value(0)).current;
+  const firedRef = useRef(false);
+  const celebrateTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Reset state when step changes
   useEffect(() => {
     if (!step) return;
@@ -47,7 +57,58 @@ export default function WashStep() {
     );
     setSecondsLeft(step.duration_min * 60);
     setRunning(false);
+    // reset de la célébration au changement d'étape
+    firedRef.current = false;
+    setCelebrating(false);
+    flashOpacity.setValue(0);
+    checkScale.setValue(0);
   }, [idx, step?.order]);
+
+  // Déclenché une seule fois quand le minuteur atteint 0
+  useEffect(() => {
+    if (
+      phase !== "timer" ||
+      secondsLeft !== 0 ||
+      !step ||
+      step.duration_min <= 0 ||
+      firedRef.current
+    ) {
+      return;
+    }
+    firedRef.current = true;
+    notifyStepComplete();
+    setCelebrating(true);
+    flashOpacity.setValue(0);
+    checkScale.setValue(0);
+    Animated.parallel([
+      Animated.sequence([
+        Animated.timing(flashOpacity, {
+          toValue: 0.45,
+          duration: 120,
+          useNativeDriver: true,
+        }),
+        Animated.timing(flashOpacity, {
+          toValue: 0,
+          duration: 520,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.spring(checkScale, {
+        toValue: 1,
+        friction: 4,
+        tension: 90,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    celebrateTimeout.current = setTimeout(() => setCelebrating(false), 1700);
+  }, [secondsLeft, phase, step?.duration_min]);
+
+  // Nettoyage du timeout de célébration
+  useEffect(() => {
+    return () => {
+      if (celebrateTimeout.current) clearTimeout(celebrateTimeout.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (!running) return;
@@ -175,11 +236,22 @@ export default function WashStep() {
           <Text variant="body">{step.instructions}</Text>
         </Card>
 
-        <Text variant="display" className="text-7xl mb-2">
-          {formatMMSS(secondsLeft)}
-        </Text>
+        {done ? (
+          <Animated.View
+            className="mb-2 items-center"
+            style={{ transform: [{ scale: checkScale }] }}
+          >
+            <Text variant="display" className="text-7xl text-ocre-deep">
+              ✓
+            </Text>
+          </Animated.View>
+        ) : (
+          <Text variant="display" className="text-7xl mb-2">
+            {formatMMSS(secondsLeft)}
+          </Text>
+        )}
         <Text variant="caption" className="mb-10">
-          Minuteur
+          {done ? "Étape terminée · bravo ✨" : "Minuteur"}
         </Text>
 
         {!done ? (
@@ -187,7 +259,10 @@ export default function WashStep() {
             <Button
               label={running ? "Pause" : "▶ Démarrer"}
               className="flex-1"
-              onPress={() => setRunning((r) => !r)}
+              onPress={() => {
+                if (!running) primeStepAudio();
+                setRunning((r) => !r);
+              }}
             />
             <Button
               label="Ignorer"
@@ -209,6 +284,21 @@ export default function WashStep() {
           />
         )}
       </View>
+
+      {/* Flash de célébration plein écran */}
+      <Animated.View
+        pointerEvents="none"
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          backgroundColor: colors.ocre.DEFAULT,
+          opacity: flashOpacity,
+        }}
+      />
+      {celebrating && <ConfettiBurst key={idx} />}
     </ScreenContainer>
   );
 }
