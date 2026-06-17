@@ -1,11 +1,17 @@
+import { useRef, useState } from "react";
 import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Button } from "@/components/Button";
+import { Celebration } from "@/components/Celebration";
+import { pickFlowPhrase } from "@/lib/celebration";
 
 export default function WashComplete() {
   const router = useRouter();
+  const [celebrate, setCelebrate] = useState(true);
+  const phrase = useRef(pickFlowPhrase()).current;
+
   return (
     <ScreenContainer scroll={false}>
       <View className="flex-1 items-center justify-center px-4">
@@ -24,6 +30,15 @@ export default function WashComplete() {
           onPress={() => router.replace("/(tabs)")}
         />
       </View>
+
+      <Celebration
+        visible={celebrate}
+        emoji="👑"
+        title="Wash day terminé !"
+        subtitle={phrase}
+        ctaLabel="Voir ma progression"
+        onDismiss={() => setCelebrate(false)}
+      />
     </ScreenContainer>
   );
 }

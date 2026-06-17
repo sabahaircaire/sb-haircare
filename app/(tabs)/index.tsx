@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View, Pressable, Image, Linking } from "react-native";
 import { useRouter } from "expo-router";
 import { productsForPorosity } from "@/lib/products";
@@ -9,6 +9,8 @@ import { Button } from "@/components/Button";
 import { Pill } from "@/components/Pill";
 import { Avatar } from "@/components/Avatar";
 import { Input } from "@/components/Input";
+import { Celebration } from "@/components/Celebration";
+import { pickMissionPhrase } from "@/lib/celebration";
 import { colors } from "@/theme/colors";
 import {
   useProfile,
@@ -21,6 +23,7 @@ import {
   useUserStats,
   useDailyMissions,
   useTodayCompletedMissionIds,
+  useToggleMission,
 } from "@/lib/hooks/useStats";
 
 type SubTab = "apercu" | "missions" | "produits" | "croissance";
@@ -272,6 +275,25 @@ function MissionsSection() {
   const { data: stats } = useUserStats();
   const { data: missions } = useDailyMissions();
   const { data: completed } = useTodayCompletedMissionIds();
+  const toggleMission = useToggleMission();
+
+  const dayMissions = (missions ?? []).slice(0, 3);
+  const allDone =
+    dayMissions.length > 0 &&
+    !!completed &&
+    dayMissions.every((m) => completed.has(m.id));
+
+  // Célébration quand toutes les missions du jour passent à "faites"
+  const [celebrate, setCelebrate] = useState(false);
+  const phrase = useRef(pickMissionPhrase());
+  const prevAllDone = useRef(false);
+  useEffect(() => {
+    if (allDone && !prevAllDone.current) {
+      phrase.current = pickMissionPhrase();
+      setCelebrate(true);
+    }
+    prevAllDone.current = allDone;
+  }, [allDone]);
 
   const totalXp = stats?.total_xp ?? 0;
   const streak = stats?.current_streak ?? 0;
@@ -319,12 +341,13 @@ function MissionsSection() {
         <Text variant="caption" className="mb-3">
           Complète les 3 pour gagner le bonus XP !
         </Text>
-        {(missions ?? []).slice(0, 3).map((m) => {
+        {dayMissions.map((m) => {
           const done = completed?.has(m.id) ?? false;
           return (
-            <View
+            <Pressable
               key={m.id}
-              className="flex-row items-start py-2 border-b border-cream-warm"
+              onPress={() => toggleMission.mutate({ mission: m, done })}
+              className="flex-row items-start py-2 border-b border-cream-warm active:opacity-60"
             >
               <View
                 className={`w-5 h-5 rounded-full mr-3 mt-1 items-center justify-center ${
@@ -354,10 +377,19 @@ function MissionsSection() {
               <Text variant="body-medium" className="text-ocre-deep ml-2">
                 +{m.xp_reward} XP
               </Text>
-            </View>
+            </Pressable>
           );
         })}
       </Card>
+
+      <Celebration
+        visible={celebrate}
+        emoji="👑"
+        title="Missions du jour validées !"
+        subtitle={phrase.current}
+        ctaLabel="Trop bien !"
+        onDismiss={() => setCelebrate(false)}
+      />
 
       {/* Coffre Glow Up */}
       <Card variant="outline" className="mb-4 flex-row items-center justify-between">

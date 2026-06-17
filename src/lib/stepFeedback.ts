@@ -53,22 +53,53 @@ function playChime() {
   }
 }
 
-export function notifyStepComplete() {
-  // Vibration
+function vibrate(pattern: number[], webPattern: number[]) {
   if (Platform.OS === "web") {
     try {
-      (navigator as any)?.vibrate?.([80, 40, 120]);
+      (navigator as any)?.vibrate?.(webPattern);
     } catch {
       // navigator.vibrate absent (iOS Safari) — on ignore silencieusement
     }
   } else {
     try {
-      Vibration.vibrate([0, 80, 40, 120]);
+      Vibration.vibrate(pattern);
     } catch {
       // pas de moteur de vibration — on ignore
     }
   }
+}
 
+export function notifyStepComplete() {
+  vibrate([0, 80, 40, 120], [80, 40, 120]);
   // Son (web uniquement pour l'instant — synthétisé, sans asset)
   playChime();
+}
+
+// Célébration « majeure » (fin de flow, toutes les missions) — plus
+// triomphante : vibration plus longue + petit arpège ascendant.
+export function notifyCelebration() {
+  vibrate([0, 60, 40, 60, 40, 160], [60, 40, 60, 40, 160]);
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  const notes = [
+    { freq: 1046.5, start: 0 }, // Do6
+    { freq: 1318.51, start: 0.12 }, // Mi6
+    { freq: 1567.98, start: 0.24 }, // Sol6
+    { freq: 2093.0, start: 0.38 }, // Do7
+  ];
+  for (const { freq, start } of notes) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    const t0 = now + start;
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.exponentialRampToValueAtTime(0.15, t0 + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.5);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(t0);
+    osc.stop(t0 + 0.55);
+  }
 }
