@@ -287,6 +287,12 @@ export default function ProductDetail() {
           } else {
             await hapticSuccess();
             add(product.slug);
+            // Une fois ajouté, on revient à la liste des produits
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.replace("/shelf/browse");
+            }
           }
         }}
       />

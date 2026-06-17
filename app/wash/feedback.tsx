@@ -41,22 +41,22 @@ export default function WashFeedback() {
 
       <View className="flex-1 px-2 justify-center">
         <Text variant="h2" className="text-center mb-8">
-          Comment sentez-vous{"\n"}vos cheveux ?
+          Comment sens-tu{"\n"}tes cheveux ?
         </Text>
 
         <View>
           <Choice
-            label="Amazing!"
+            label="Au top ! ✨"
             selected={feedback === "amazing"}
             onPress={() => setFeedback("amazing")}
           />
           <Choice
-            label="Good"
+            label="Bien"
             selected={feedback === "good"}
             onPress={() => setFeedback("good")}
           />
           <Choice
-            label="Could be better"
+            label="Peut mieux faire"
             selected={feedback === "could_be_better"}
             onPress={() => setFeedback("could_be_better")}
           />

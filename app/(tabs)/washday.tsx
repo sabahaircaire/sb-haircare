@@ -117,51 +117,65 @@ export default function WashdayScreen() {
                 key={iso}
                 hapticStyle="light"
                 onPress={() => onTapDay(iso)}
-                className={`rounded-2xl border ${
+                className={`rounded-2xl items-center justify-center ${
                   active
-                    ? "bg-bordeaux border-bordeaux"
+                    ? "bg-bordeaux"
                     : isToday
-                      ? "bg-cream-light border-bordeaux"
-                      : "bg-cream-light border-cream-warm"
+                      ? "bg-cream-light"
+                      : "bg-cream-light"
                 }`}
-                style={{ width: 56, paddingVertical: 10 }}
+                style={{
+                  width: 52,
+                  height: 80,
+                  borderWidth: isToday && !active ? 1.5 : 1,
+                  borderColor: active
+                    ? colors.bordeaux.DEFAULT
+                    : isToday
+                      ? colors.bordeaux.DEFAULT
+                      : colors.cream.warm,
+                }}
               >
                 <Text
                   variant="caption"
-                  className="text-center"
                   style={{
+                    fontSize: 11,
+                    letterSpacing: 0.6,
+                    textTransform: "uppercase",
                     color: active
-                      ? colors.cream.light
+                      ? colors.cream.warm
                       : isToday
                         ? colors.bordeaux.DEFAULT
                         : colors.ink.muted,
-                    fontFamily: active || isToday
-                      ? "Inter_600SemiBold"
-                      : "Inter_400Regular",
+                    fontFamily: "Inter_500Medium",
                   }}
                 >
                   {WEEKDAYS_SHORT[date.getDay()]}
                 </Text>
                 <Text
                   variant="h3"
-                  className="text-center mt-1"
                   style={{
+                    marginTop: 3,
+                    fontSize: 22,
+                    lineHeight: 26,
                     color: active
                       ? colors.white
                       : isToday
                         ? colors.bordeaux.DEFAULT
                         : colors.ink.DEFAULT,
-                    fontSize: 20,
+                    fontFamily:
+                      active || isToday
+                        ? "Inter_600SemiBold"
+                        : "Inter_400Regular",
                   }}
                 >
                   {date.getDate()}
                 </Text>
-                <View className="items-center mt-1" style={{ height: 6 }}>
+                <View style={{ height: 5, marginTop: 5 }}>
                   {active ? (
                     <View
                       style={{
-                        width: 6,
-                        height: 6,
+                        width: 5,
+                        height: 5,
                         borderRadius: 3,
                         backgroundColor: colors.ocre.soft,
                       }}
@@ -231,7 +245,7 @@ export default function WashdayScreen() {
                 />
               ) : null}
             </View>
-            <View className="p-3">
+            <View className="p-3" style={{ minHeight: 64, justifyContent: "center" }}>
               <Text variant="body-medium" numberOfLines={2} className="mb-0.5">
                 {flow.title}
               </Text>
@@ -255,18 +269,13 @@ export default function WashdayScreen() {
       <Text variant="caption" className="mb-3">
         Tes produits SB Haircare et ceux que tu as choisis
       </Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingRight: 16 }}
-      >
-        <View className="flex-row gap-3">
-          {/* SB Haircare always first */}
+      <View className="flex-row flex-wrap gap-3">
+        {/* SB Haircare always first */}
           {PRODUCTS.map((p) => (
             <View
               key={`sb-${p.slug}`}
               className="bg-cream-light rounded-2xl border border-cream-warm overflow-hidden"
-              style={{ width: 130 }}
+              style={{ width: "48%", minHeight: 184 }}
             >
               <View className="h-28 bg-cream-warm relative">
                 <Image
@@ -330,7 +339,7 @@ export default function WashdayScreen() {
                 hapticStyle="light"
                 onPress={() => router.push(`/shelf/product/${p.slug}`)}
                 className="bg-cream-light rounded-2xl border border-cream-warm overflow-hidden"
-                style={{ width: 130 }}
+                style={{ width: "48%", minHeight: 184 }}
               >
                 <View className="h-28 bg-cream-warm relative">
                   {p.image_url ? (
@@ -395,7 +404,7 @@ export default function WashdayScreen() {
             hapticStyle="medium"
             onPress={() => router.push("/shelf/browse")}
             className="rounded-2xl border-2 border-dashed border-cream-warm items-center justify-center"
-            style={{ width: 130, minHeight: 168 }}
+            style={{ width: "48%", minHeight: 184 }}
           >
             <Text variant="h2" className="text-ink-muted mb-1">
               +
@@ -404,8 +413,7 @@ export default function WashdayScreen() {
               Ajouter un produit
             </Text>
           </PressableHaptic>
-        </View>
-      </ScrollView>
+      </View>
     </ScreenContainer>
   );
 }

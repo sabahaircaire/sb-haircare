@@ -35,7 +35,7 @@ export default function WashPhoto() {
           📸 Photo
         </Text>
         <Text variant="h2" className="text-center mb-8">
-          Washday progress
+          Ta progression
         </Text>
 
         <Pressable onPress={pickImage} className="w-full max-w-[340px] mb-6">
@@ -52,16 +52,33 @@ export default function WashPhoto() {
           </Card>
         </Pressable>
 
-        <Button
-          label="Ajouter cette photo"
-          className="w-full max-w-[280px] mb-3"
-          onPress={pickImage}
-        />
-        <Pressable onPress={() => router.replace("/wash/feedback")}>
-          <Text variant="caption" className="text-ink-muted">
-            Ignorer
-          </Text>
-        </Pressable>
+        {afterPhotoUri ? (
+          <>
+            <Button
+              label="Valider"
+              className="w-full max-w-[280px] mb-3"
+              onPress={() => router.replace("/wash/feedback")}
+            />
+            <Pressable onPress={pickImage}>
+              <Text variant="caption" className="text-ink-muted">
+                Changer de photo
+              </Text>
+            </Pressable>
+          </>
+        ) : (
+          <>
+            <Button
+              label="Ajouter une photo"
+              className="w-full max-w-[280px] mb-3"
+              onPress={pickImage}
+            />
+            <Pressable onPress={() => router.replace("/wash/feedback")}>
+              <Text variant="caption" className="text-ink-muted">
+                Ignorer
+              </Text>
+            </Pressable>
+          </>
+        )}
       </View>
     </ScreenContainer>
   );
