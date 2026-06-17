@@ -11,6 +11,8 @@ import { Avatar } from "@/components/Avatar";
 import { Input } from "@/components/Input";
 import { Celebration } from "@/components/Celebration";
 import { pickMissionPhrase } from "@/lib/celebration";
+import { PressableHaptic } from "@/components/PressableHaptic";
+import { impact as hapticImpact } from "@/lib/haptics";
 import { colors } from "@/theme/colors";
 import {
   useProfile,
@@ -89,6 +91,7 @@ export default function HomeScreen() {
           return (
             <Pressable
               key={t.value}
+              onPressIn={() => hapticImpact("light")}
               onPress={() => setTab(t.value)}
               className={`flex-1 py-2 items-center border-b-2 ${
                 active ? "border-bordeaux" : "border-cream-warm"
@@ -128,11 +131,14 @@ function CheckInCard() {
         <Text variant="h3">Check-in quotidien</Text>
         <Text variant="caption">Comment vont tes cheveux ?</Text>
       </View>
-      <Pressable className="bg-bordeaux rounded-full px-4 py-2">
+      <PressableHaptic
+        hapticStyle="medium"
+        className="bg-bordeaux rounded-full px-4 py-2"
+      >
         <Text variant="body-medium" style={{ color: colors.white }}>
           Faire le check-in
         </Text>
-      </Pressable>
+      </PressableHaptic>
     </Card>
   );
 }
@@ -251,7 +257,10 @@ function Collapsible({
   const [open, setOpen] = useState(false);
   return (
     <Card variant="outline" className="mb-3">
-      <Pressable onPress={() => setOpen((o) => !o)}>
+      <Pressable
+        onPressIn={() => hapticImpact("light")}
+        onPress={() => setOpen((o) => !o)}
+      >
         <View className="flex-row items-center justify-between">
           <Text variant="h3">
             {icon ? `${icon} ` : ""}
