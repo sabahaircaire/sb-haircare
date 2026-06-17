@@ -7,16 +7,46 @@ type Props = {
   scroll?: boolean;
 };
 
+/**
+ * Mobile-first container. On web, content is capped to 480px and centered
+ * so the layout never stretches across a desktop window. On native the
+ * max-width has no effect (the device is already mobile-width).
+ */
 export function ScreenContainer({ children, scroll = true }: Props) {
-  const Body = scroll ? ScrollView : View;
+  if (scroll) {
+    return (
+      <SafeAreaView className="flex-1 bg-cream" edges={["top"]}>
+        <ScrollView
+          className="flex-1"
+          contentContainerStyle={{
+            paddingHorizontal: 20,
+            paddingTop: 16,
+            paddingBottom: 40,
+            width: "100%",
+            maxWidth: 480,
+            alignSelf: "center",
+          }}
+        >
+          {children}
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-cream" edges={["top"]}>
-      <Body
+      <View
         className="flex-1"
-        contentContainerClassName={scroll ? "px-5 pt-4 pb-10" : undefined}
+        style={{
+          paddingHorizontal: 20,
+          paddingTop: 16,
+          width: "100%",
+          maxWidth: 480,
+          alignSelf: "center",
+        }}
       >
-        {scroll ? children : <View className="flex-1 px-5 pt-4">{children}</View>}
-      </Body>
+        {children}
+      </View>
     </SafeAreaView>
   );
 }
