@@ -1,20 +1,18 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const STORAGE_KEY = "@sb/wash-schedule-v2";
+const STORAGE_KEY = "@sb/wash-schedule-v1";
 
-export type Scheduled = {
+type Scheduled = {
   date: string; // YYYY-MM-DD
   flow_code?: string;
-  product_slugs?: string[]; // SB or market product slugs (mixed)
-  notes?: string;
 };
 
 type State = {
   loaded: boolean;
   scheduled: Scheduled[];
   load: () => Promise<void>;
-  schedule: (entry: Scheduled) => Promise<void>;
+  schedule: (date: string, flow_code?: string) => Promise<void>;
   unschedule: (date: string) => Promise<void>;
   getForDate: (date: string) => Scheduled | undefined;
 };
@@ -23,7 +21,7 @@ async function persist(items: Scheduled[]) {
   try {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   } catch {
-    // ignore
+    // ignore — best effort
   }
 }
 
@@ -33,13 +31,9 @@ export const useWashSchedule = create<State>((set, get) => ({
 
   load: async () => {
     try {
-      // Try v2 first, then migrate v1 if present
-      let raw = await AsyncStorage.getItem(STORAGE_KEY);
-      if (!raw) {
-        const v1 = await AsyncStorage.getItem("@sb/wash-schedule-v1");
-        if (v1) raw = v1;
-      }
+      const raw = await AsyncStorage.getItem(STORAGE_KEY);
       const parsed: Scheduled[] = raw ? JSON.parse(raw) : [];
+      // Drop entries older than 30 days
       const cutoff = new Date();
       cutoff.setDate(cutoff.getDate() - 30);
       const cutoffStr = cutoff.toISOString().slice(0, 10);
@@ -50,10 +44,10 @@ export const useWashSchedule = create<State>((set, get) => ({
     }
   },
 
-  schedule: async (entry) => {
+  schedule: async (date, flow_code) => {
     const next = [
-      ...get().scheduled.filter((s) => s.date !== entry.date),
-      entry,
+      ...get().scheduled.filter((s) => s.date !== date),
+      { date, flow_code },
     ].sort((a, b) => a.date.localeCompare(b.date));
     set({ scheduled: next });
     await persist(next);
@@ -80,10 +74,7 @@ export function isFuture(iso: string): boolean {
   return iso > todayISO();
 }
 
-export function nextNDays(
-  n: number,
-  start?: Date,
-): { iso: string; date: Date }[] {
+export function nextNDays(n: number, start?: Date): { iso: string; date: Date }[] {
   const result: { iso: string; date: Date }[] = [];
   const base = start ? new Date(start) : new Date();
   for (let i = 0; i < n; i++) {

@@ -1,19 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import {
   View,
   Pressable,
   Image,
   ScrollView,
-  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
-import {
-  ensureNotificationPermission,
-  scheduleWashDayReminder,
-  getReminderStatus,
-} from "@/lib/notifications";
-import { success as hapticSuccess, impact as hapticImpact } from "@/lib/haptics";
-import { PressableHaptic } from "@/components/PressableHaptic";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
@@ -28,13 +20,6 @@ import {
   nextNDays,
 } from "@/store/washSchedule";
 import { PRODUCTS } from "@/lib/products";
-import {
-  MARKET_PRODUCTS,
-  computeMatchBadge,
-  BADGE_META,
-} from "@/lib/marketCatalog";
-import { useUserShelf } from "@/store/userShelf";
-import { useProfile } from "@/lib/hooks/useProfile";
 import type { WashDayFlow } from "@/lib/db-types";
 
 const WEEKDAYS_SHORT = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
@@ -46,6 +31,8 @@ export default function WashdayScreen() {
 
   const load = useWashSchedule((s) => s.load);
   const scheduled = useWashSchedule((s) => s.scheduled);
+  const schedule = useWashSchedule((s) => s.schedule);
+  const unschedule = useWashSchedule((s) => s.unschedule);
   const loaded = useWashSchedule((s) => s.loaded);
 
   useEffect(() => {
@@ -57,24 +44,6 @@ export default function WashdayScreen() {
   const upcoming = scheduled.find((s) => !isPast(s.date) && s.date !== today);
   const days14 = useMemo(() => nextNDays(14), []);
 
-  // User shelf (market products)
-  const loadShelf = useUserShelf((s) => s.load);
-  const shelfItems = useUserShelf((s) => s.items);
-  const shelfLoaded = useUserShelf((s) => s.loaded);
-  const { data: profile } = useProfile();
-
-  useEffect(() => {
-    if (!shelfLoaded) loadShelf();
-  }, [shelfLoaded, loadShelf]);
-
-  const userShelfProducts = useMemo(
-    () =>
-      shelfItems
-        .map((i) => MARKET_PRODUCTS.find((p) => p.slug === i.product_slug))
-        .filter((p): p is (typeof MARKET_PRODUCTS)[number] => !!p),
-    [shelfItems],
-  );
-
   const launch = (flow: WashDayFlow) => {
     startFlow(flow);
     router.push("/wash/intro");
@@ -82,7 +51,12 @@ export default function WashdayScreen() {
 
   const onTapDay = (iso: string) => {
     if (isPast(iso) && iso !== today) return;
-    router.push(`/wash/plan?date=${iso}`);
+    const existing = scheduled.find((s) => s.date === iso);
+    if (existing) {
+      unschedule(iso);
+    } else {
+      schedule(iso, "jour_de_lavage");
+    }
   };
 
   return (
@@ -113,9 +87,8 @@ export default function WashdayScreen() {
             const sched = scheduled.find((s) => s.date === iso);
             const active = !!sched;
             return (
-              <PressableHaptic
+              <Pressable
                 key={iso}
-                hapticStyle="light"
                 onPress={() => onTapDay(iso)}
                 className={`rounded-2xl border ${
                   active
@@ -168,7 +141,7 @@ export default function WashdayScreen() {
                     />
                   ) : null}
                 </View>
-              </PressableHaptic>
+              </Pressable>
             );
           })}
         </View>
@@ -186,8 +159,7 @@ export default function WashdayScreen() {
           <Text variant="body" className="mb-4" style={{ color: colors.cream.light }}>
             Lance ton flow pour suivre chaque étape avec minuteur.
           </Text>
-          <PressableHaptic
-            hapticStyle="medium"
+          <Pressable
             onPress={() => {
               const flow =
                 flows.find((f) => f.code === todaySched.flow_code) ??
@@ -200,10 +172,21 @@ export default function WashdayScreen() {
             <Text variant="body-medium" className="text-bordeaux">
               ▶ Lancer le flow
             </Text>
-          </PressableHaptic>
+          </Pressable>
         </Card>
       ) : upcoming ? (
-        <UpcomingWashDayCard date={upcoming.date} />
+        <Card variant="outline" className="mb-6">
+          <Text variant="label" className="mb-2">
+            ⏳ Prochain wash day
+          </Text>
+          <Text variant="h2" className="mb-1">
+            {formatDate(upcoming.date)}
+          </Text>
+          <Text variant="caption">
+            Dans {daysUntil(upcoming.date)} jour
+            {daysUntil(upcoming.date) > 1 ? "s" : ""} — prépare ton étagère
+          </Text>
+        </Card>
       ) : null}
 
       {/* Flows rapides */}
@@ -215,9 +198,8 @@ export default function WashdayScreen() {
       </Text>
       <View className="flex-row flex-wrap gap-3 mb-8">
         {(flows ?? []).map((flow) => (
-          <PressableHaptic
+          <Pressable
             key={flow.id}
-            hapticStyle="medium"
             onPress={() => launch(flow)}
             className="bg-cream-light rounded-2xl overflow-hidden border border-cream-warm"
             style={{ width: "48%" }}
@@ -239,21 +221,16 @@ export default function WashdayScreen() {
                 {flow.total_duration_min} min
               </Text>
             </View>
-          </PressableHaptic>
+          </Pressable>
         ))}
       </View>
 
-      {/* Étagère produit mixte */}
-      <View className="flex-row items-center justify-between mb-3">
-        <Text variant="label">🧴 Ton étagère wash day</Text>
-        <Pressable onPress={() => router.push("/shelf/browse")}>
-          <Text variant="caption" className="text-bordeaux">
-            + Ajouter
-          </Text>
-        </Pressable>
-      </View>
+      {/* Étagère produit */}
+      <Text variant="label" className="mb-3">
+        🧴 Ton étagère wash day
+      </Text>
       <Text variant="caption" className="mb-3">
-        Tes produits SB Haircare et ceux que tu as choisis
+        Les produits SB Haircare à avoir sous la main
       </Text>
       <ScrollView
         horizontal
@@ -261,41 +238,18 @@ export default function WashdayScreen() {
         contentContainerStyle={{ paddingRight: 16 }}
       >
         <View className="flex-row gap-3">
-          {/* SB Haircare always first */}
           {PRODUCTS.map((p) => (
             <View
-              key={`sb-${p.slug}`}
+              key={p.slug}
               className="bg-cream-light rounded-2xl border border-cream-warm overflow-hidden"
               style={{ width: 130 }}
             >
-              <View className="h-28 bg-cream-warm relative">
+              <View className="h-28 bg-cream-warm">
                 <Image
                   source={{ uri: p.image }}
                   style={{ width: "100%", height: "100%" }}
                   resizeMode="cover"
                 />
-                <View
-                  style={{
-                    position: "absolute",
-                    top: 6,
-                    left: 6,
-                    backgroundColor: "#1F7A3D",
-                    borderRadius: 999,
-                    paddingHorizontal: 7,
-                    paddingVertical: 1,
-                  }}
-                >
-                  <Text
-                    variant="caption"
-                    style={{
-                      color: colors.white,
-                      fontSize: 9,
-                      fontFamily: "Inter_600SemiBold",
-                    }}
-                  >
-                    ★ SB
-                  </Text>
-                </View>
               </View>
               <View className="p-2">
                 <Text
@@ -315,178 +269,9 @@ export default function WashdayScreen() {
               </View>
             </View>
           ))}
-
-          {/* User shelf market products */}
-          {userShelfProducts.map((p) => {
-            const { badge } = computeMatchBadge(
-              p,
-              profile?.porosity,
-              profile?.hair_type,
-            );
-            const meta = BADGE_META[badge];
-            return (
-              <PressableHaptic
-                key={`user-${p.slug}`}
-                hapticStyle="light"
-                onPress={() => router.push(`/shelf/product/${p.slug}`)}
-                className="bg-cream-light rounded-2xl border border-cream-warm overflow-hidden"
-                style={{ width: 130 }}
-              >
-                <View className="h-28 bg-cream-warm relative">
-                  {p.image_url ? (
-                    <Image
-                      source={{ uri: p.image_url }}
-                      style={{ width: "100%", height: "100%" }}
-                      resizeMode="cover"
-                    />
-                  ) : null}
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: 6,
-                      left: 6,
-                      backgroundColor: meta.color,
-                      borderRadius: 999,
-                      paddingHorizontal: 6,
-                      paddingVertical: 1,
-                    }}
-                  >
-                    <Text
-                      variant="caption"
-                      style={{
-                        color: colors.white,
-                        fontSize: 9,
-                        fontFamily: "Inter_600SemiBold",
-                      }}
-                    >
-                      {meta.emoji}
-                    </Text>
-                  </View>
-                </View>
-                <View className="p-2">
-                  <Text
-                    variant="caption"
-                    style={{
-                      color: colors.ink.muted,
-                      fontSize: 10,
-                      fontFamily: "Inter_500Medium",
-                    }}
-                  >
-                    {p.brand}
-                  </Text>
-                  <Text
-                    variant="caption"
-                    numberOfLines={2}
-                    style={{
-                      color: colors.ink.DEFAULT,
-                      fontFamily: "Inter_600SemiBold",
-                      lineHeight: 16,
-                    }}
-                  >
-                    {p.name}
-                  </Text>
-                </View>
-              </PressableHaptic>
-            );
-          })}
-
-          {/* Add CTA */}
-          <PressableHaptic
-            hapticStyle="medium"
-            onPress={() => router.push("/shelf/browse")}
-            className="rounded-2xl border-2 border-dashed border-cream-warm items-center justify-center"
-            style={{ width: 130, minHeight: 168 }}
-          >
-            <Text variant="h2" className="text-ink-muted mb-1">
-              +
-            </Text>
-            <Text variant="caption" className="text-ink-muted text-center px-2">
-              Ajouter un produit
-            </Text>
-          </PressableHaptic>
         </View>
       </ScrollView>
     </ScreenContainer>
-  );
-}
-
-function UpcomingWashDayCard({ date }: { date: string }) {
-  const [reminderState, setReminderState] = useState<
-    "idle" | "scheduled" | "denied" | "unsupported"
-  >("idle");
-
-  useEffect(() => {
-    (async () => {
-      const s = await getReminderStatus();
-      if (s === "denied") setReminderState("denied");
-      if (s === "unsupported") setReminderState("unsupported");
-    })();
-  }, []);
-
-  const onSetReminder = async () => {
-    hapticImpact("medium");
-    const ok = await ensureNotificationPermission();
-    if (!ok) {
-      setReminderState("denied");
-      Alert.alert(
-        "Notifications désactivées",
-        "Active les notifications pour SB Haircare dans les réglages de ton téléphone pour recevoir tes rappels wash day.",
-      );
-      return;
-    }
-    await scheduleWashDayReminder(date);
-    setReminderState("scheduled");
-    await hapticSuccess();
-  };
-
-  return (
-    <Card variant="outline" className="mb-6">
-      <Text variant="label" className="mb-2">
-        ⏳ Prochain wash day
-      </Text>
-      <Text variant="h2" className="mb-1">
-        {formatDate(date)}
-      </Text>
-      <Text variant="caption" className="mb-3">
-        Dans {daysUntil(date)} jour{daysUntil(date) > 1 ? "s" : ""} — prépare
-        ton étagère
-      </Text>
-
-      <Pressable
-        onPress={reminderState === "scheduled" ? undefined : onSetReminder}
-        disabled={
-          reminderState === "scheduled" || reminderState === "unsupported"
-        }
-        style={({ pressed }) => [
-          {
-            backgroundColor:
-              reminderState === "scheduled" ? "#EFE3CF" : "#4A1015",
-            borderRadius: 999,
-            paddingVertical: 12,
-            alignItems: "center",
-            opacity:
-              reminderState === "unsupported" ? 0.4 : pressed ? 0.9 : 1,
-            transform: pressed ? [{ scale: 0.98 }] : [{ scale: 1 }],
-          },
-        ]}
-      >
-        <Text
-          variant="body-medium"
-          style={{
-            color:
-              reminderState === "scheduled" ? "#4A1015" : "#FFFFFF",
-          }}
-        >
-          {reminderState === "scheduled"
-            ? "✓ Rappel activé"
-            : reminderState === "denied"
-              ? "🔔 Activer dans les réglages"
-              : reminderState === "unsupported"
-                ? "🔔 Rappel indisponible sur le web"
-                : "🔔 Me le rappeler"}
-        </Text>
-      </Pressable>
-    </Card>
   );
 }
 

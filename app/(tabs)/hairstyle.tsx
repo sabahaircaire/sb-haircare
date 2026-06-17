@@ -4,9 +4,7 @@ import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { Text } from "@/components/Text";
 import { Card } from "@/components/Card";
-import { PressableHaptic } from "@/components/PressableHaptic";
 import { colors } from "@/theme/colors";
-import { impact as hapticImpact, success as hapticSuccess } from "@/lib/haptics";
 import {
   HAIRSTYLES,
   HAIRSTYLE_PHOTOS,
@@ -80,11 +78,7 @@ export default function HairstyleScreen() {
           {FILTERS.map((f) => {
             const active = filter === f.value;
             return (
-              <PressableHaptic
-                key={f.value}
-                hapticStyle="light"
-                onPress={() => setFilter(f.value)}
-              >
+              <Pressable key={f.value} onPress={() => setFilter(f.value)}>
                 <View
                   className={`rounded-full px-4 py-2 border ${
                     active
@@ -104,7 +98,7 @@ export default function HairstyleScreen() {
                     {f.label}
                   </Text>
                 </View>
-              </PressableHaptic>
+              </Pressable>
             );
           })}
         </View>
@@ -116,9 +110,8 @@ export default function HairstyleScreen() {
       </Text>
       <View className="flex-row flex-wrap gap-3">
         {filtered.map((s) => (
-          <PressableHaptic
+          <Pressable
             key={s.code}
-            hapticStyle="light"
             onPress={() => router.push(`/hairstyle/${s.code}`)}
             className="bg-cream-light rounded-2xl overflow-hidden border border-cream-warm"
             style={{ width: "48%" }}
@@ -158,7 +151,7 @@ export default function HairstyleScreen() {
               </Text>
               <Text variant="caption">{durationLabel(s)}</Text>
             </View>
-          </PressableHaptic>
+          </Pressable>
         ))}
       </View>
     </ScreenContainer>
@@ -216,15 +209,8 @@ function CurrentStyleCard({
         />
       </View>
       <Pressable
-        onPress={async () => {
-          await hapticSuccess();
-          onEnd();
-        }}
+        onPress={onEnd}
         className="self-start bg-cream-light rounded-full px-4 py-2"
-        style={({ pressed }) => ({
-          opacity: pressed ? 0.85 : 1,
-          transform: pressed ? [{ scale: 0.97 }] : [{ scale: 1 }],
-        })}
       >
         <Text variant="body-medium" className="text-bordeaux">
           ✓ J'ai retiré
